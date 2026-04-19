@@ -1,0 +1,330 @@
+volumes:
+  kafka_data:
+  minio_data:
+  redis_data:
+  mysql_data:
+  mongo_data:
+  milvus_etcd:
+  milvus_minio:
+  milvus_data:
+  model_weights:
+  sandbox_volume:
+  mysql_migrations:
+
+services:
+  # --- 基础设施服务 ---
+  kafka-init:
+    build:
+      context: ./init-kafka  # 指向包含 Dockerfile 和脚本的目录
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_PARTITIONS_NUMBER=${KAFKA_PARTITIONS_NUMBER}
+      - KAFKA_REPLICATION_FACTOR=${KAFKA_REPLICATION_FACTOR:-1}
+    networks:
+      - daziknow-net
+
+  kafka:
+    image: apache/kafka:latest
+    environment:
+      - CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+      - KAFKA_NUM_PARTITIONS=${KAFKA_PARTITIONS_NUMBER:-10}
+      - KAFKA_MESSAGE_MAX_BYTES=2097152000
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2024-10-13T13-34-11Z
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongodb:
+    image: mongo:7.0.12
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7.2.5
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  mysql:
+    image: mysql:9.0.1
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  milvus-etcd:
+    image: quay.io/coreos/etcd:v3.5.18
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - milvus_etcd:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  milvus-minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    environment:
+      - MINIO_ACCESS_KEY=${MILVUS_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MILVUS_MINIO_SECRET_KEY}
+    command: minio server /minio_data --console-address ":9001"
+    volumes:
+      - milvus_minio:/minio_data
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  milvus-standalone:
+    image: milvusdb/milvus:v2.5.6
+    command: ["milvus", "run", "standalone"]
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - ETCD_ENDPOINTS=milvus-etcd:2379
+      - MINIO_ADDRESS=milvus-minio:9000
+    volumes:
+      - milvus_data:/var/lib/milvus
+    depends_on:
+      milvus-etcd:
+        condition: service_healthy
+      milvus-minio:
+        condition: service_healthy
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 10s
+      start_period: 30s
+      timeout: 5s
+      retries: 30
+
+  # --- 应用服务 ---
+  python-sandbox:
+    build:
+      context: ./sandbox
+    image: python-sandbox
+    volumes:
+      - sandbox_volume:/shared
+    networks:
+      - daziknow-net
+
+  # 新增 unoserver 服务
+  unoserver:
+    profiles:
+      - document-convert
+    build:
+      context: ./unoserver
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - ALL_PROXY=${ALL_PROXY}
+        - NO_PROXY=${NO_PROXY}
+    environment:
+      - UNOSERVER_INSTANCES=${UNOSERVER_INSTANCES:-1}  # 实例数=CPU核心数
+      - BASE_PORT=${UNOSERVER_BASE_PORT}
+      - BASE_UNO_PORT=${UNOSERVER_BASE_UNO_PORT}
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2003"]  # 检查第一个实例
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+      
+  backend:
+    build:
+      context: ./backend
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - ALL_PROXY=${ALL_PROXY}
+        - NO_PROXY=${NO_PROXY}
+    depends_on:
+      kafka-init:
+        condition: service_completed_successfully
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      milvus-standalone:
+        condition: service_healthy
+    volumes:
+      - model_weights:/model_weights
+      - /var/run/docker.sock:/var/run/docker.sock
+      - sandbox_volume:${SANDBOX_SHARED_VOLUME}
+      - mysql_migrations:/app/migrations_previous
+    environment:
+      - MAX_WORKERS=${MAX_WORKERS}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - HTTP_PROXY=${HTTP_PROXY}
+      - HTTPS_PROXY=${HTTPS_PROXY}
+      - ALL_PROXY=${ALL_PROXY}
+      - NO_PROXY=${NO_PROXY}
+      - DB_URL=${DB_URL}
+      - DB_POOL_SIZE=${DB_POOL_SIZE}
+      - DB_MAX_OVERFLOW=${DB_MAX_OVERFLOW}
+      - REDIS_URL=${REDIS_URL}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_TOKEN_DB=${REDIS_TOKEN_DB}
+      - REDIS_TASK_DB=${REDIS_TASK_DB}
+      - REDIS_LOCK_DB=${REDIS_LOCK_DB}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+      - REFRESH_TOKEN_EXPIRE_MINUTES=${REFRESH_TOKEN_EXPIRE_MINUTES}
+      - MONGODB_URL=${MONGODB_URL}
+      - MONGODB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - MONGODB_DB=${MONGODB_DB}
+      - MONGODB_POOL_SIZE=${MONGODB_POOL_SIZE}
+      - MONGODB_MIN_POOL_SIZE=${MONGODB_MIN_POOL_SIZE}
+      - KAFKA_BROKER_URL=${KAFKA_BROKER_URL}
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_GROUP_ID=${KAFKA_GROUP_ID}
+      - KAFKA_ENABLED=${KAFKA_ENABLED}
+      - MINIO_URL=${MINIO_URL}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+      - DEBUG_MODE=${DEBUG_MODE}
+      - MILVUS_URI=${MILVUS_URI}
+      - COLBERT_MODEL_PATH=${COLBERT_MODEL_PATH}
+      - SANDBOX_SHARED_VOLUME=${SANDBOX_SHARED_VOLUME}
+      - SERVER_IP=${SERVER_IP}
+      - UNOSERVER_INSTANCES=${UNOSERVER_INSTANCES}
+      - UNOSERVER_HOST=${UNOSERVER_HOST}
+      - UNOSERVER_BASE_PORTS=${UNOSERVER_BASE_PORT}
+      - WAIT_FOR_UNOSERVER=${WAIT_FOR_UNOSERVER}
+      - EMBEDDING_IMAGE_DPI=${EMBEDDING_IMAGE_DPI}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL}
+      - EMBEDDING_FALLBACK_ENABLED=${EMBEDDING_FALLBACK_ENABLED}
+      - JINA_API_KEY=${JINA_API_KEY}
+      - JINA_EMBEDDINGS_V4_URL=${JINA_EMBEDDINGS_V4_URL}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - DEEPSEEK_BASE_URL=${DEEPSEEK_BASE_URL}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL}
+    networks:
+      - daziknow-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health/check"]
+      interval: 30s
+      start_period: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+        - MINIO_IMAGE_URL_PREFIX=${MINIO_IMAGE_URL_PREFIX}
+        - MINIO_URL=${MINIO_URL}
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+        - ALL_PROXY=${ALL_PROXY}
+        - NO_PROXY=${NO_PROXY}
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    networks:
+      - daziknow-net
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "18080:80"
+      # - "443:443" # 如需 HTTPS 可启用
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/nginx.conf
+      # - ./frontend/ssl:/etc/nginx/ssl # 如需 HTTPS
+    networks:
+      - daziknow-net
+
+networks:
+  daziknow-net:
+    driver: bridge

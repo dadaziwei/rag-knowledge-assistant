@@ -1,0 +1,43 @@
+<svg width="960" height="720" viewBox="0 0 960 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="960" height="720" rx="8" fill="#F4F7F6"/>
+  <path d="M118 138H842" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M118 582H842" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M168 166H482C503.539 166 521 183.461 521 205V515C521 536.539 503.539 554 482 554H168C146.461 554 129 536.539 129 515V205C129 183.461 146.461 166 168 166Z" fill="white" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M180 219H470" stroke="#AABBB6" stroke-width="10" stroke-linecap="round"/>
+  <path d="M180 256H420" stroke="#D9E2DF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M180 287H455" stroke="#D9E2DF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M180 318H388" stroke="#D9E2DF" stroke-width="8" stroke-linecap="round"/>
+  <rect x="180" y="375" width="291" height="94" rx="8" fill="#F8FAF9" stroke="#D9E2DF"/>
+  <path d="M207 405H326" stroke="#0F766E" stroke-width="8" stroke-linecap="round"/>
+  <path d="M207 436H421" stroke="#AABBB6" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="467" cy="182" r="28" fill="#E3F4F1" stroke="#BFE4DC"/>
+  <path d="M456 182H478M467 171V193" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
+  <rect x="597" y="143" width="246" height="128" rx="8" fill="#FFFFFF" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M626 187H754" stroke="#0F766E" stroke-width="9" stroke-linecap="round"/>
+  <path d="M626 220H808" stroke="#AABBB6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M626 242H740" stroke="#D9E2DF" stroke-width="7" stroke-linecap="round"/>
+  <rect x="597" y="296" width="246" height="128" rx="8" fill="#FFFFFF" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M626 340H736" stroke="#C2410C" stroke-width="9" stroke-linecap="round"/>
+  <path d="M626 373H807" stroke="#AABBB6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M626 395H762" stroke="#D9E2DF" stroke-width="7" stroke-linecap="round"/>
+  <rect x="597" y="449" width="246" height="128" rx="8" fill="#FFFFFF" stroke="#D9E2DF" stroke-width="2"/>
+  <path d="M626 493H791" stroke="#0F766E" stroke-width="9" stroke-linecap="round"/>
+  <path d="M626 526H802" stroke="#AABBB6" stroke-width="7" stroke-linecap="round"/>
+  <path d="M626 548H747" stroke="#D9E2DF" stroke-width="7" stroke-linecap="round"/>
+  <path d="M521 257C554 257 564 207 597 207" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
+  <path d="M521 360H597" stroke="#AABBB6" stroke-width="4" stroke-linecap="round"/>
+  <path d="M521 463C554 463 564 513 597 513" stroke="#0F766E" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="559" cy="257" r="10" fill="#0F766E"/>
+  <circle cx="559" cy="360" r="10" fill="#AABBB6"/>
+  <circle cx="559" cy="463" r="10" fill="#0F766E"/>
+  <rect x="318" y="88" width="324" height="78" rx="8" fill="#0F766E"/>
+  <path d="M360 127H434" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <path d="M360 148H506" stroke="#BFE4DC" stroke-width="7" stroke-linecap="round"/>
+  <text x="548" y="139" fill="white" font-family="Arial, sans-serif" font-size="32" font-weight="700">RAG</text>
+  <text x="548" y="160" fill="#BFE4DC" font-family="Arial, sans-serif" font-size="14">Knowledge Q&amp;A</text>
+  <rect x="365" y="590" width="230" height="48" rx="8" fill="#FFFFFF" stroke="#D9E2DF"/>
+  <circle cx="395" cy="614" r="8" fill="#0F766E"/>
+  <circle cx="480" cy="614" r="8" fill="#C2410C"/>
+  <circle cx="565" cy="614" r="8" fill="#0F766E"/>
+  <path d="M407 614H468M492 614H553" stroke="#AABBB6" stroke-width="4" stroke-linecap="round"/>
+</svg>

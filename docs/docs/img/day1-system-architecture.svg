@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="840" viewBox="0 0 1400 840" role="img" aria-labelledby="title desc">
+  <title id="title">RAG 知识库智能问答助手系统拓扑</title>
+  <desc id="desc">展示用户、Nginx、前端、FastAPI 后端、Redis、MongoDB、MySQL、MinIO、Kafka、Milvus、Unoserver、Embedding 和 DeepSeek API 的关系。</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fb; }
+      .band { fill: #ffffff; stroke: #d7dce5; stroke-width: 2; rx: 10; }
+      .box { fill: #ffffff; stroke: #253044; stroke-width: 2; rx: 8; }
+      .box-blue { fill: #e8f2ff; stroke: #1b5faa; stroke-width: 2; rx: 8; }
+      .box-green { fill: #e9f8ef; stroke: #168047; stroke-width: 2; rx: 8; }
+      .box-yellow { fill: #fff6df; stroke: #a66a00; stroke-width: 2; rx: 8; }
+      .box-red { fill: #ffecec; stroke: #bb3434; stroke-width: 2; rx: 8; }
+      .box-purple { fill: #f0edff; stroke: #6650b7; stroke-width: 2; rx: 8; }
+      .title { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 30px; font-weight: 700; fill: #1d2738; }
+      .label { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 18px; font-weight: 700; fill: #1d2738; }
+      .small { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 14px; fill: #4d5b70; }
+      .layer { font-family: "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; font-size: 17px; font-weight: 700; fill: #62708a; }
+      .arrow { stroke: #506179; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #7d8798; stroke-width: 2.2; fill: none; stroke-dasharray: 8 7; marker-end: url(#arrow); }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#506179"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="840"/>
+  <text class="title" x="48" y="58">RAG 知识库智能问答助手：Day 1 系统拓扑</text>
+  <text class="small" x="50" y="86">接入层、业务层、数据与中间件层、文档与模型层分离，便于排障、扩展与面试讲解。</text>
+
+  <rect class="band" x="40" y="120" width="1320" height="130"/>
+  <text class="layer" x="60" y="150">接入层</text>
+  <rect class="box-blue" x="95" y="170" width="180" height="58"/>
+  <text class="label" x="136" y="196">用户浏览器</text>
+  <text class="small" x="125" y="218">上传 / 聊天 / 配置</text>
+  <rect class="box-blue" x="390" y="170" width="200" height="58"/>
+  <text class="label" x="438" y="196">Nginx 网关</text>
+  <text class="small" x="435" y="218">localhost:18080</text>
+  <rect class="box-blue" x="705" y="170" width="210" height="58"/>
+  <text class="label" x="748" y="196">Next.js 前端</text>
+  <text class="small" x="744" y="218">页面交互与状态</text>
+  <rect class="box-green" x="1030" y="170" width="220" height="58"/>
+  <text class="label" x="1074" y="196">FastAPI 后端</text>
+  <text class="small" x="1080" y="218">/api/v1 业务入口</text>
+
+  <path class="arrow" d="M275 199 H390"/>
+  <path class="arrow" d="M590 199 H705"/>
+  <path class="arrow" d="M915 199 H1030"/>
+  <path class="arrow" d="M590 221 C760 280, 880 280, 1030 221"/>
+
+  <rect class="band" x="40" y="285" width="1320" height="245"/>
+  <text class="layer" x="60" y="315">数据与中间件层</text>
+  <rect class="box-yellow" x="85" y="350" width="180" height="70"/>
+  <text class="label" x="138" y="378">Redis</text>
+  <text class="small" x="112" y="402">Token / 任务进度</text>
+
+  <rect class="box-yellow" x="310" y="350" width="180" height="70"/>
+  <text class="label" x="360" y="378">MongoDB</text>
+  <text class="small" x="338" y="402">会话 / 元数据</text>
+
+  <rect class="box-yellow" x="535" y="350" width="180" height="70"/>
+  <text class="label" x="593" y="378">MySQL</text>
+  <text class="small" x="563" y="402">关系型业务数据</text>
+
+  <rect class="box-yellow" x="760" y="350" width="180" height="70"/>
+  <text class="label" x="814" y="378">MinIO</text>
+  <text class="small" x="788" y="402">原始文件 / 图片</text>
+
+  <rect class="box-yellow" x="985" y="350" width="180" height="70"/>
+  <text class="label" x="1034" y="378">Kafka</text>
+  <text class="small" x="1010" y="402">异步处理任务</text>
+
+  <rect class="box-purple" x="850" y="455" width="210" height="55"/>
+  <text class="label" x="905" y="480">Milvus</text>
+  <text class="small" x="888" y="501">向量库 / Top-K</text>
+
+  <rect class="box-purple" x="1110" y="455" width="185" height="55"/>
+  <text class="label" x="1154" y="480">Etcd / MinIO</text>
+  <text class="small" x="1146" y="501">Milvus 内部依赖</text>
+
+  <path class="arrow" d="M1140 228 V350"/>
+  <path class="arrow" d="M1140 228 C1020 285, 925 320, 850 350"/>
+  <path class="arrow" d="M1140 228 C900 285, 720 320, 625 350"/>
+  <path class="arrow" d="M1140 228 C780 285, 520 320, 400 350"/>
+  <path class="arrow" d="M1140 228 C610 280, 310 320, 175 350"/>
+  <path class="arrow" d="M1140 228 C1100 315, 1010 390, 955 455"/>
+  <path class="arrow" d="M1060 482 H1110"/>
+
+  <rect class="band" x="40" y="565" width="1320" height="190"/>
+  <text class="layer" x="60" y="595">文档与模型层</text>
+  <rect class="box-red" x="190" y="630" width="230" height="70"/>
+  <text class="label" x="232" y="658">Unoserver</text>
+  <text class="small" x="218" y="682">LibreOffice 文档转换</text>
+
+  <rect class="box-red" x="560" y="630" width="230" height="70"/>
+  <text class="label" x="604" y="658">Embedding</text>
+  <text class="small" x="590" y="682">向量化 / Fallback</text>
+
+  <rect class="box-red" x="930" y="630" width="230" height="70"/>
+  <text class="label" x="982" y="658">DeepSeek API</text>
+  <text class="small" x="972" y="682">OpenAI-compatible</text>
+
+  <path class="dash" d="M1075 420 C930 520, 620 565, 420 630"/>
+  <path class="dash" d="M1075 420 C960 520, 780 585, 705 630"/>
+  <path class="arrow" d="M1140 228 C1235 385, 1200 535, 1160 630"/>
+  <path class="arrow" d="M675 630 C760 565, 820 540, 900 510"/>
+  <path class="arrow" d="M305 630 C455 540, 650 500, 850 420"/>
+
+  <text class="small" x="62" y="790">阅读重点：先看 Compose 服务清单，再看 FastAPI lifespan 初始化，再看 API 路由注册和 Settings 配置来源。</text>
+</svg>

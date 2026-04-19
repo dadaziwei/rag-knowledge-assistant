@@ -1,0 +1,592 @@
+{
+  "HomePage": {
+    "title": "DaziKnow 知识库智能问答助手",
+    "subtitle1": "<brand>DaziKnow</brand> 将团队文档转化为可检索、可追溯的智能答案",
+    "subtitle2": "上传、解析、检索，并与知识库实时对话。",
+    "joinButton": "加入我们",
+    "startButton": "立即开始",
+    "knowledgeButton": "管理知识库",
+    "forgetTokenization": "FastAPI + Kafka + MinIO + Redis + Milvus + DeepSeek",
+    "contactPrefix": "维护者：",
+    "githubLink": "GitHub"
+  },
+  "LocaleSwitcher": {
+    "switchTo": "切换至 {locale}"
+  },
+  "AIChat": {
+    "llmError": "```LLM_ERROR\n  ⚠️ LLM/VLM 未能生成响应...\n  ⚠️ 请刷新页面查看后端反馈以确定原因\n  ```",
+    "parsingMessage": "解析中，请稍候..."
+  },
+  "Navbar": {
+    "home": "主页",
+    "aiChat": "RAG对话",
+    "workFlow": "工作流",
+    "knowledgeBase": "知识库"
+  },
+  "UserMenu": {
+    "logOut": "退出登录",
+    "tutorial": "使用教程",
+    "support": "获取支持",
+    "about": "关于我们"
+  },
+  "ConfirmAlert": {
+    "notice": "提示",
+    "error": "错误",
+    "close": "关闭"
+  },
+  "ConfirmDialog": {
+    "title": "确认",
+    "confirm": "确定",
+    "cancel": "取消"
+  },
+  "AddLLMEngine": {
+    "title": "新建 LLM 配置",
+    "placeholder": "输入新模型名称...",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "ChatBox": {
+    "initialPrompt": "请配置本次对话的大模型以及要使用的知识库",
+    "configureButton": "立即配置",
+    "noEngine": "未选择LLM模型",
+    "knowledgeBaseAccessed": "已访问的知识库：",
+    "noKnowledgeBase": "未访问任何知识库",
+    "uploadStatus": {
+      "uploading": "上传",
+      "processing": "处理中",
+      "failed": "上传失败"
+    },
+    "placeholder": "按 Shift+Enter 发送...",
+    "sendButton": "发送",
+    "stopButton": "停止",
+    "parsingMessage": "解析中，请稍候...",
+    "unsupportedFileType": "不支持的文件类型：",
+    "uploadError": "上传错误",
+    "embeddingError": "嵌入错误！",
+    "downloadError": "下载失败！"
+  },
+  "ChatMessage": {
+    "cancelButton": "取消",
+    "sendButton": "发送",
+    "copied": "已复制!",
+    "copy": "复制",
+    "regenerate": "重新生成",
+    "edit": "编辑",
+    "closeReferences": "关闭参考文件",
+    "viewReferences": "查看参考文件",
+    "score": "得分: ",
+    "fromLabel": "来源: ",
+    "defaultBaseName": "用户上传"
+  },
+  "ChatKnowledgeConfigModal": {
+    "title": "配置知识库",
+    "addKnowledgeBase": "添加知识库",
+    "tutorials": "教程：点击右上角菜单图标",
+    "llmSettings": "大模型设置",
+    "llmEngine": "大模型引擎",
+    "addNewConfiguration": "添加新配置",
+    "llmUrl": "大模型 URL",
+    "apiKey": "API Key",
+    "chooseDB": "选择知识库",
+    "systemPrompt": "系统提示",
+    "advancedSettings": "高级设置",
+    "temperature": "温度",
+    "range_0_1": "(0-1)",
+    "useModelDefault": "使用模型默认值",
+    "maxToken": "最大 Token 数",
+    "range_1024_1048576": "(1024-1048576)",
+    "topP": "Top-P",
+    "knowledgeBaseTopK": "知识库 Top-K",
+    "range_1_30": "(1-30)",
+    "retrievalScoreThreshold": "检索分数阈值",
+    "suggestedRetrievalScoreThreshold": "Jina-embeddings-v4 建议值：4 左右",
+    "range_0_20": "(0-20)",
+    "cancel": "取消",
+    "save": "保存",
+    "deleteModelConfigConfirmation": "确认删除模型配置 "
+  },
+  "ChatLeftSidebar": {
+    "newChat": "新对话",
+    "historyChat": "历史对话",
+    "searchPlaceholder": "搜索对话...",
+    "clear": "清空",
+    "refresh": "刷新",
+    "rename": "重命名",
+    "delete": "删除",
+    "deleteAllConfirm": "确认删除所有对话记录？",
+    "deleteSingleConfirm": "确认删除对话记录: ",
+    "timeLabel": {
+      "today": "今天",
+      "yesterday": "昨天",
+      "within_7_days": "7天内",
+      "within_30_days": "30天内",
+      "earlier": "更早"
+    }
+  },
+  "MarkdownDisplay": {
+    "copy": "复制",
+    "copied": "已复制!",
+    "deepThinking": "💡 深度思考",
+    "totalTokenUsage": "总 token 消耗: ",
+    "completionTokenUsage": "生成 token 消耗: ",
+    "promptTokenUsage": "提示 token 消耗: ",
+    "copyFallback": "无法自动复制，请按 Ctrl+C 复制选中内容"
+  },
+  "KnowledgeBase": {
+    "UploadButton": {
+      "initial": "上传文件",
+      "uploading": "上传: ",
+      "processing": "处理中: ",
+      "failed": "上传失败"
+    },
+    "Errors": {
+      "emptyName": "知识库名称不能为空！",
+      "duplicateName": "知识库名称已存在！",
+      "unsupportedFileType": "不支持的文件类型: ",
+      "uploadError": "上传错误",
+      "embeddingError": "嵌入处理错误！"
+    },
+    "LoadingPlaceholder": "加载中..."
+  },
+  "AddKnowledgeBase": {
+    "title": "新建知识库",
+    "placeholder": "输入知识库名称...",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "KnowledgeBaseDetails": {
+    "searchPlaceholder": "搜索文件...",
+    "fileNumber": "文件数量: ",
+    "createTime": "创建时间: ",
+    "dragPrompt": "拖拽文件到此处或点击选择",
+    "supportedFormats": "支持PDF、Word、PPT等100+文档格式",
+    "choosePrompt": "请选择一个知识库进行上传",
+    "allFilesTitle": "所有文件",
+    "downloadFailed": "下载失败!"
+  },
+  "KnowledgeBaseLeftSideBar": {
+    "addKnowledgeBase": "添加知识库",
+    "files": "个文件",
+    "rename": "重命名",
+    "delete": "删除",
+    "deleteConfirm": "确认删除知识库: "
+  },
+  "ShowFiles": {
+    "knowledgeBasePrefix": " · 知识库：",
+    "noFiles": "暂无文件",
+    "displayPerPage": "每页显示数量",
+    "previous": "上一页",
+    "next": "下一页",
+    "pageInfo": "第 {current} 页 / 共 {total} 页",
+    "deleteConfirm": "确认删除文件: "
+  },
+  "KnowledgeBaseTopBar": {
+    "title": "知识库中心",
+    "searchPlaceholder": "搜索知识库..."
+  },
+  "WithAuth": {
+    "checkMessage": "检查登录状态..."
+  },
+  "SignInPage": {
+    "brand": "DaziKnow",
+    "loginTitle": "登录",
+    "registerTitle": "注册",
+    "nameLabel": "用户名",
+    "emailLabel": "电子邮箱",
+    "passwordLabel": "密码",
+    "signInButton": "登录",
+    "signUpButton": "注册",
+    "sendingButton": "发送中",
+    "noAccount": "还没有账号？",
+    "haveAccount": "已有账号？",
+    "illegalCharError": "用户名不能包含 '-'、'_' 或 ' ' 字符",
+    "loginSuccess": "登录成功！",
+    "loginFailed": "登录失败: ",
+    "registerSuccess": "注册成功！",
+    "registerFailed": "注册失败: ",
+    "loadingFallback": "加载中..."
+  },
+  "WorkflowPage": {
+    "createError": {
+      "nameRequired": "工作流名称不能为空！",
+      "nameExists": "工作流名称已存在！"
+    },
+    "loadingText": "加载中...",
+    "emptyPrompt": {
+      "createOrChoose": "请创建或选择一个已有的工作流来开始创作",
+      "accessTutorials": "通过右上角菜单来访问教程"
+    }
+  },
+  "AddWorkflow": {
+    "newWorkflow": "新建工作流",
+    "placeholder": "请输入工作流名称...",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "ChatflowHistory": {
+    "deleteConfirmation": "确认删除此对话流？",
+    "noMessages": "未找到消息"
+  },
+  "CustomEdge": {
+    "loopNext": "循环出口",
+    "loopBody": "循环入口"
+  },
+  "CustomNode": {
+    "label": {
+      "start": "开始",
+      "loop": "循环",
+      "condition": "判断",
+      "vlm": "大模型",
+      "code": "代码"
+    },
+    "noModelChosen": "未选择LLM引擎",
+    "knowledgeBaseAccessed": "已访问知识库:",
+    "noKnowledgeBaseAccessed": "未访问知识库"
+  },
+  "FlowEditor": {
+    "label": {
+      "start": "开始",
+      "loop": "循环",
+      "condition": "判断",
+      "vlm": "大模型",
+      "code": "代码"
+    },
+    "import": "导入",
+    "export": "导出",
+    "refresh": "刷新",
+    "chatFlow": "对话流",
+    "run": "运行",
+    "debug": "调试",
+    "save": "保存",
+    "stop": "停止",
+    "clear": "清空",
+    "clickHere": "点击这里",
+    "startNodeExist": "开始节点已存在！",
+    "saveSuccess": "保存成功！",
+    "saveFailure": "保存失败！",
+    "executionSuccess": "执行成功",
+    "debugPause": "调试暂停！",
+    "workflowCanceled": "工作流已被用户取消！",
+    "sseError": "SSE连接失败，请重试",
+    "consecutiveInputNodes": "错误：连续的输入节点",
+    "consecutiveOutputNodes": "错误：连续的输出节点",
+    "noInputBeforeOutput": "输出节点之前找不到输入节点！",
+    "cancelFailed": "取消失败：",
+    "saveCustomNodeFailed": "保存失败，请导出工作流备份并检查网络！",
+    "imageNameVersionRequired": "请填写 \"环境名称\" 和 \"环境版本\"，或者在运行LLM节点前关闭 \"保存运行环境\" 复选框！",
+    "questionRequiredForNode": "在运行LLM节点前，请为节点 “{nodeName}” 填写向AI提问的问题！",
+    "invalidWorkflowFile": "无效的工作流文件格式",
+    "confirmClearChatflow": "确认清空此对话流？",
+    "defaultOutput": "输出将显示在这里",
+    "vlmOutputPlaceholder": "此区域显示工作流执行期间的节点输出。",
+    "vlmChatPlaceholder": "为了从输出中提取全局变量，请确保提示LLM/VLM以json格式输出，例如：\n\n'{ \"output\":\"AI输出\" '}。\n\n此外，您可以直接将LLM的响应分配给下面的全局变量：",
+    "awaitRunning": "等待运行...",
+    "autoSaveSuccess": "工作流 {workflowName} 自动保存成功",
+    "autoSaveFailure": "工作流 {workflowName} 自动保存失败",
+    "importWorkflowAlert": "导入工作流将覆盖当前内容，是否继续？",
+    "emptyNodeName": "节点名称不能为空！",
+    "spaceNodeName": "节点名称不允许包含空格！",
+    "duplicateNodeName": "节点名称已存在!",
+    "nodeExecutionSuccess": "节点运行成功!"
+  },
+  "WorkflowLeftSideBar": {
+    "addWorkflow": "添加工作流",
+    "rename": "重命名",
+    "delete": "删除",
+    "confirmDelete": "确认删除工作流：\"{flowName}\"？"
+  },
+  "NodeTypeSelector": {
+    "baseNodeSection": "基础节点",
+    "customNodeSection": "自定义节点",
+    "searchPlaceholder": "搜索节点...",
+    "deleteConfirm": "确认删除自定义节点 \"{nodeName}\"？",
+    "label": {
+      "start": "开始",
+      "loop": "循环",
+      "condition": "判断",
+      "vlm": "大模型",
+      "code": "代码"
+    }
+  },
+  "SaveCustomNode": {
+    "title": "新建自定义节点",
+    "placeholder": "输入自定义节点名称...",
+    "cancel": "取消",
+    "confirm": "确定"
+  },
+  "WorkflowTopBar": {
+    "title": "工作流管理",
+    "searchPlaceholder": "搜索工作流..."
+  },
+  "StartNode": {
+    "description": {
+      "title": "描述",
+      "editButton": "编辑",
+      "previewButton": "预览",
+      "description": "无描述信息",
+      "editingPlaceholder": "输入Markdown格式的描述内容..."
+    },
+    "globalVariable": {
+      "title": "全局变量",
+      "placeholder": "变量名",
+      "addButton": "点击添加",
+      "variableValuePlaceholder": "支持Python变量类型",
+      "noVariable": "未检测到变量。如果工作流需要，请添加",
+      "initPrefix": "初始值: "
+    },
+    "output": {
+      "title": "输出"
+    }
+  },
+  "VlmNode": {
+    "saveNode": "保存节点",
+    "description": "描述",
+    "edit": "编辑",
+    "preview": "预览",
+    "noDescription": "无描述信息",
+    "editingPlaceholder": "输入Markdown格式的描述内容...",
+    "globalVariable": "全局变量",
+    "variableName": "变量名",
+    "clickToAdd": "点击添加",
+    "variableValuePlaceholder": "支持Python变量类型",
+    "noVariableFound": "未检测到变量。如果工作流需要，请添加",
+    "init": "初始值: ",
+    "prompt": "系统提示",
+    "moreSettings": "模型设置",
+    "input": "输入",
+    "changeInputStyle": "更改输入方式",
+    "useChatflowUserInput": "使用对话流用户实时提问",
+    "predefinedInput": "预设输入: ",
+    "inputPlaceholder": "输入中的全局变量应使用双花括号包裹，例如 '{{variable'}}.",
+    "llmResponse": "LLM响应",
+    "runTest": "运行测试",
+    "output": "输出",
+    "debug": "调试",
+    "chatflow": "工作流",
+    "setAsChatflowUserInput": "设为对话流用户输入",
+    "setAsChatflowAIResponse": "设为对话流AI响应",
+    "useConversationMemory": "使用对话记忆",
+    "mcpTools": "MCP工具",
+    "testError": "在运行LLM节点前请先输入您的问题!",
+    "llmResponsePlaceholder": "LLM响应 ="
+  },
+  "FunctionNode": {
+    "saveNode": "保存节点",
+    "description": {
+      "title": "描述",
+      "preview": "预览",
+      "edit": "编辑",
+      "placeholder": "输入Markdown格式的描述内容...",
+      "noDescription": "无描述信息"
+    },
+    "globalVariable": {
+      "title": "全局变量",
+      "noVariables": "未检测到变量。如果工作流需要，请添加",
+      "variableNamePlaceholder": "变量名",
+      "clickToAdd": "点击添加",
+      "variableValuePlaceholder": "支持Python变量类型",
+      "initPrefix": "初始值: "
+    },
+    "pipDependencies": {
+      "title": "Pip依赖",
+      "sandboxImage": "沙箱环境:",
+      "commitEnvironment": "保存运行环境",
+      "imageName": "环境名称:",
+      "imageNamePlaceholder": "例如：python-sandbox",
+      "imageVersion": "环境版本:",
+      "imageVersionPlaceholder": "例如：1.0",
+      "instruction": "在整个工作流中只需在一个节点上安装依赖 - 无需在其他节点上重复安装",
+      "packageNamePlaceholder": "pip依赖包名",
+      "packageVersionPlaceholder": "版本号，可选",
+      "clickToAdd": "点击添加",
+      "noPackages": "未检测到依赖包。如果工作流需要，请安装依赖",
+      "mirrorUrl": "pip镜像地址",
+      "mirrorUrlPlaceholder": "可选"
+    },
+    "codeEditor": {
+      "title": "代码编辑器",
+      "runTest": "运行测试"
+    },
+    "output": {
+      "title": "输出",
+      "debug": "调试",
+      "running": "代码运行中...",
+      "errorConnect": "连接错误: "
+    },
+    "deleteImage": {
+      "confirmMessage": "确认删除镜像 \"{imageName}\"？"
+    },
+    "alert": {
+      "imageNameVersionRequired": "请填写\"环境名称\"和\"环境版本\"，或者取消勾选\"保存运行环境\"勾选框，然后再运行节点！",
+      "packageExists": "依赖包 \"{packageName}\" 已存在",
+      "cannotDeleteImage": "无法删除镜像，该镜像可能有依赖的子镜像！"
+    }
+  },
+  "LoopNode": {
+    "saveNode": "保存节点",
+    "description": "描述",
+    "edit": "编辑",
+    "preview": "预览",
+    "descriptionPlaceholder": "输入Markdown格式的描述内容...",
+    "noDescription": "无描述信息",
+    "globalVariable": "全局变量",
+    "variableNamePlaceholder": "变量名",
+    "clickToAdd": "点击添加",
+    "variableValuePlaceholder": "支持Python变量类型",
+    "noVariableFound": "未检测到变量。如果工作流需要，请添加",
+    "initPrefix": "初始值: ",
+    "loopSettings": "循环设置",
+    "loopType": "循环类型",
+    "countOption": "计数",
+    "conditionOption": "条件",
+    "maxCountLabel": "循环次数",
+    "breakConditionLabel": "中断条件",
+    "conditionPlaceholder": "支持Python表达式",
+    "output": "输出",
+    "debug": "调试"
+  },
+  "ConditionNode": {
+    "saveNode": "保存节点",
+    "description": {
+      "title": "描述",
+      "edit": "编辑",
+      "preview": "预览",
+      "descriptionPlaceholder": "输入Markdown格式的描述内容...",
+      "noDescription": "无描述信息"
+    },
+    "globalVariable": {
+      "title": "全局变量",
+      "placeholder": "变量名",
+      "addButton": "点击添加",
+      "variableValuePlaceholder": "支持Python变量类型",
+      "noVariable": "未检测到变量。如果工作流需要，请添加",
+      "initValue": "初始值: "
+    },
+    "condition": {
+      "title": "判断条件",
+      "runTest": "运行测试",
+      "notConnected": "请先连接节点再设置连接条件",
+      "placeholder": "支持 Python 表达式",
+      "label": "条件-"
+    },
+    "output": {
+      "title": "输出",
+      "debug": "调试"
+    }
+  },
+  "WorkflowKnowledgeConfigModal": {
+    "title": "配置知识库",
+    "addKnowledgeBase": "添加知识库",
+    "tutorials": "教程：点击右上角菜单图标",
+    "llmSettings": "大模型设置",
+    "llmEngine": "大模型引擎",
+    "addNewConfiguration": "添加新配置",
+    "llmUrl": "大模型 URL",
+    "apiKey": "API Key",
+    "chooseDB": "选择知识库",
+    "advancedSettings": "高级设置",
+    "temperature": "温度",
+    "range_0_1": "(0-1)",
+    "useModelDefault": "使用模型默认值",
+    "maxToken": "最大 Token 数",
+    "range_1024_1048576": "(1024-1048576)",
+    "topP": "Top-P",
+    "knowledgeBaseTopK": "知识库 Top-K",
+    "range_1_30": "(1-30)",
+    "retrievalScoreThreshold": "检索分数阈值",
+    "suggestedRetrievalScoreThreshold": "Jina-embeddings-v4 建议值：4 左右",
+    "range_0_20": "(0-20)",
+    "cancel": "取消",
+    "save": "保存",
+    "deleteModelConfigConfirmation": "确认删除模型配置 "
+  },
+  "McpConfig": {
+    "title": "配置MCP工具",
+    "mcpNamePlaceholder": "MCP名称",
+    "addButton": "点击添加",
+    "noToolsFound": "未找到MCP工具",
+    "noToolDescriptionFound": "未找到该函数描述信息",
+    "mcpServerUrl": "MCP服务器地址",
+    "refreshTools": "刷新工具",
+    "advancedSettings": "高级设置",
+    "useFunctionTool": "启用此函数工具",
+    "useThisMCPTools": "启用此MCP服务",
+    "cancelButton": "取消",
+    "saveButton": "保存",
+    "confirmDeleteMcpConfig": "确认删除MCP配置 \"{name}\""
+  },
+  "McpAdvancedSettings": {
+    "title": "配置 MCP 工具",
+    "headers": "请求头",
+    "addHeaders": "添加请求头",
+    "timeoutSettings": "超时设置",
+    "timeout": "超时时间（秒）",
+    "sseReadTimeout": "SSE读取超时（秒）",
+    "keyPlaceholder": "键",
+    "valuePlaceholder": "值",
+    "timeoutPlaceholder": "默认：5秒",
+    "sseTimeoutPlaceholder": "默认：300秒",
+    "cancel": "取消",
+    "save": "保存",
+    "mcpConfigNotFound": "未找到此节点的MCP配置"
+  },
+  "WorkflowOutput": {
+    "chatflow": "对话流",
+    "return": "返回",
+    "chatflowHistory": "对话流历史",
+    "globalVariable": "全局变量",
+    "variableName": "变量名",
+    "clickToAdd": "点击添加",
+    "variableValuePlaceholder": "支持Python变量类型",
+    "noVariable": "未检测到变量。如果工作流需要，请添加",
+    "initPrefix": "初始值: ",
+    "llmResponse": "LLM响应",
+    "llmHint": "当到达带有 \"设置为对话流用户输入\" 复选框的LM/VLM节点时，发送按钮将变为活动状态。要启用用户输入，请在LLM/VLM节点中勾选 \"设置为对话流用户输入\" 选项。",
+    "waitingRun": "等待运行",
+    "shiftEnter": "发送: Shift+Enter",
+    "shiftEnterFullScreen": "按Shift+Enter发送...",
+    "unsupportedFile": "不支持的文件类型: ",
+    "uploadError": "上传错误",
+    "embeddingError": "嵌入错误！",
+    "downloadFailed": "下载失败！",
+    "clearHistory": "清除历史",
+    "confirmDelete": "确认删除所有对话流？",
+    "uploadButton": {
+      "send": "发送",
+      "uploading": "上传",
+      "processing": "处理中",
+      "failed": "失败",
+      "uploadFailed": "上传失败"
+    }
+  },
+  "About": {
+    "title": "关于",
+    "acknowledgements": "致谢",
+    "version": "版本",
+    "repository": "项目仓库",
+    "author": "作者",
+    "license": "开源协议",
+    "thankYouContent": "DaziKnow 由 daziwei 维护，定位为面向文档管理与智能问答场景的 RAG 知识库系统。",
+    "versionText": "DaziKnow v1.0.0",
+    "authorName": "daziwei",
+    "locationLabel": "所在地",
+    "location": "中国",
+    "githubProfile": "GitHub主页",
+    "email": "电子邮箱",
+    "close": "关闭"
+  },
+  "Support": {
+    "title": "支持",
+    "version": "当前版本",
+    "versionText": "DaziKnow v1.0.0",
+    "bugReport": "BUG反馈",
+    "community": "项目链接",
+    "wechatGroup": "1. 知识库文档",
+    "wechatOfficialAccount": "2. 部署说明",
+    "bilibili": "3. 本地演示清单",
+    "zhihu": "4. 面试说明",
+    "githubRepo": "5. GitHub仓库",
+    "authorEmail": "6. 维护者: {email}",
+    "close": "关闭"
+  }
+}

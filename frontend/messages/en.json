@@ -1,0 +1,592 @@
+{
+  "HomePage": {
+    "title": "DaziKnow Knowledge Base Q&A Assistant",
+    "subtitle1": "<brand>DaziKnow</brand> turns team documents into permission-aware answers",
+    "subtitle2": "Upload, parse, retrieve, and chat with your knowledge base.",
+    "joinButton": "Join us",
+    "startButton": "Start now",
+    "knowledgeButton": "Manage knowledge base",
+    "forgetTokenization": "FastAPI + Kafka + MinIO + Redis + Milvus + DeepSeek",
+    "contactPrefix": "Maintainer:",
+    "githubLink": "GitHub"
+  },
+  "LocaleSwitcher": {
+    "switchTo": "Switch to {locale}"
+  },
+  "AIChat": {
+    "llmError": "```LLM_ERROR\n  ⚠️ The LLM/VLM failed to generate a response...\n  ⚠️ Please refresh to check the backend feedback for the reason\n  ```",
+    "parsingMessage": "Parsing in progress, please wait..."
+  },
+  "Navbar": {
+    "home": "DaziKnow",
+    "aiChat": "RAG-Chat",
+    "workFlow": "Work-Flow",
+    "knowledgeBase": "Knowledge-Base"
+  },
+  "UserMenu": {
+    "logOut": "Logout",
+    "tutorial": "Tutorial",
+    "support": "Support",
+    "about": "About us"
+  },
+  "ConfirmAlert": {
+    "notice": "NOTICE",
+    "error": "ERROR",
+    "close": "Close"
+  },
+  "ConfirmDialog": {
+    "title": "CONFIRM",
+    "confirm": "Yes",
+    "cancel": "Cancel"
+  },
+  "AddLLMEngine": {
+    "title": "New LLM Configuration",
+    "placeholder": "Write your new model name...",
+    "cancel": "Cancel",
+    "confirm": "Yes"
+  },
+  "ChatBox": {
+    "initialPrompt": "Select a language model and knowledge bases to start",
+    "configureButton": "Configure Now",
+    "noEngine": "No LLM engine was chosen",
+    "knowledgeBaseAccessed": "Knowledge-Base accessed:",
+    "noKnowledgeBase": "No Knowledge-Base was accessed",
+    "uploadStatus": {
+      "uploading": "Upload",
+      "processing": "Processing",
+      "failed": "Upload Failed"
+    },
+    "placeholder": "Press Shift+Enter to send...",
+    "sendButton": "Send",
+    "stopButton": "Stop",
+    "parsingMessage": "Parsing in progress, please wait...",
+    "unsupportedFileType": "Unsupported file type:",
+    "uploadError": "Upload error",
+    "embeddingError": "Embedding error!",
+    "downloadError": "Download failed!"
+  },
+  "ChatMessage": {
+    "cancelButton": "Cancel",
+    "sendButton": "Send",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "regenerate": "Regenerate",
+    "edit": "Edit",
+    "closeReferences": "Close References",
+    "viewReferences": "View References",
+    "score": "Score: ",
+    "fromLabel": "From: ",
+    "defaultBaseName": "User Upload"
+  },
+  "ChatKnowledgeConfigModal": {
+    "title": "Configure Knowledge Base",
+    "addKnowledgeBase": "Add Knowledge-Base",
+    "tutorials": "Tutorials: Click top-right menu icon",
+    "llmSettings": "LLM Settings",
+    "llmEngine": "LLM Engine",
+    "addNewConfiguration": "Add New Configuration",
+    "llmUrl": "LLM Url",
+    "apiKey": "API Key",
+    "chooseDB": "Choose DB",
+    "systemPrompt": "System Prompt",
+    "advancedSettings": "Advanced Settings",
+    "temperature": "Temperature",
+    "range_0_1": "(0-1)",
+    "useModelDefault": "Use Model Default",
+    "maxToken": "Max Token",
+    "range_1024_1048576": "(1024-1048576)",
+    "topP": "Top-P",
+    "knowledgeBaseTopK": "Knowledge-Base Top-K",
+    "range_1_30": "(1-30)",
+    "retrievalScoreThreshold": "Retrieval Score Threshold",
+    "suggestedRetrievalScoreThreshold": "Jina-embeddings-v4 suggested value: around 4",
+    "range_0_20": "(0-20)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "deleteModelConfigConfirmation": "Confirm the deletion of model configuration "
+  },
+  "ChatLeftSidebar": {
+    "newChat": "New Chat",
+    "historyChat": "Chat History",
+    "searchPlaceholder": "Search Chat...",
+    "clear": "Clear",
+    "refresh": "Refresh",
+    "rename": "Rename",
+    "delete": "Delete",
+    "deleteAllConfirm": "Confirm the deletion of all chat records?",
+    "deleteSingleConfirm": "Confirm the deletion of chat record ",
+    "timeLabel": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "within_7_days": "Within 7 days",
+      "within_30_days": "Within 30 days",
+      "earlier": "Earlier"
+    }
+  },
+  "MarkdownDisplay": {
+    "copy": "Copy",
+    "copied": "Copied!",
+    "deepThinking": "💡 Deep Thinking",
+    "totalTokenUsage": "Total token usage: ",
+    "completionTokenUsage": "Completion token usage: ",
+    "promptTokenUsage": "Prompt token usage: ",
+    "copyFallback": "Could not copy automatically, please press Ctrl+C to copy the selected content"
+  },
+  "KnowledgeBase": {
+    "UploadButton": {
+      "initial": "Upload Files",
+      "uploading": "Upload: ",
+      "processing": "Processing: ",
+      "failed": "Upload Failed"
+    },
+    "Errors": {
+      "emptyName": "Knowledge-Base name cannot be empty!",
+      "duplicateName": "Knowledge-Base name already exists!",
+      "unsupportedFileType": "Unsupported file type: ",
+      "uploadError": "Upload error",
+      "embeddingError": "Embedding error!"
+    },
+    "LoadingPlaceholder": "Loading..."
+  },
+  "AddKnowledgeBase": {
+    "title": "New Knowledge-Base",
+    "placeholder": "Write your knowledge base name...",
+    "cancel": "Cancel",
+    "confirm": "Yes"
+  },
+  "KnowledgeBaseDetails": {
+    "searchPlaceholder": "Search File...",
+    "fileNumber": "File Number: ",
+    "createTime": "Creation Time: ",
+    "dragPrompt": "Drag files here or click to select",
+    "supportedFormats": "Supports 100+ formats: PDF, Word, PPT, etc.",
+    "choosePrompt": "Please choose a Knowledge-Base to upload",
+    "allFilesTitle": "All Files",
+    "downloadFailed": "Download failed!"
+  },
+  "KnowledgeBaseLeftSideBar": {
+    "addKnowledgeBase": "Add Knowledge-Base",
+    "files": "files",
+    "rename": "Rename",
+    "delete": "Delete",
+    "deleteConfirm": "Confirm the deletion of knowledge-base "
+  },
+  "ShowFiles": {
+    "knowledgeBasePrefix": " · Knowledge-Base: ",
+    "noFiles": "No Files",
+    "displayPerPage": "Display Per Page",
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {current} of {total}",
+    "deleteConfirm": "Confirm the deletion of file "
+  },
+  "KnowledgeBaseTopBar": {
+    "title": "My Knowledge-Base",
+    "searchPlaceholder": "Search Knowledge-Base..."
+  },
+  "WithAuth": {
+    "checkMessage": "check login state..."
+  },
+  "SignInPage": {
+    "brand": "DaziKnow",
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "nameLabel": "Name",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "signInButton": "Sign In",
+    "signUpButton": "Sign Up",
+    "sendingButton": "Sending",
+    "noAccount": "Don’t have an account?",
+    "haveAccount": "Already have an account?",
+    "illegalCharError": "Username cannot contain '-', '_', or space.",
+    "loginSuccess": "Login Success!",
+    "loginFailed": "Login Failed: ",
+    "registerSuccess": "Sign-up Success!",
+    "registerFailed": "Register failed: ",
+    "loadingFallback": "Loading..."
+  },
+  "WorkflowPage": {
+    "createError": {
+      "nameRequired": "Work-Flow name can not be null!",
+      "nameExists": "Work-Flow name already exists!"
+    },
+    "loadingText": "Loading...",
+    "emptyPrompt": {
+      "createOrChoose": "Please create or choose a workflow to start",
+      "accessTutorials": "Access tutorials via top-right hamburger menu"
+    }
+  },
+  "AddWorkflow": {
+    "newWorkflow": "New Work-Flow",
+    "placeholder": "Write your Work-Flow name...",
+    "cancel": "Cancel",
+    "confirm": "Yes"
+  },
+  "ChatflowHistory": {
+    "deleteConfirmation": "Confirm the deletion of this Chatflow?",
+    "noMessages": "No messages found"
+  },
+  "CustomEdge": {
+    "loopNext": "loop next",
+    "loopBody": "loop body"
+  },
+  "CustomNode": {
+    "label": {
+      "start": "Start",
+      "loop": "Loop",
+      "condition": "Condition",
+      "vlm": "LLM",
+      "code": "Code"
+    },
+    "noModelChosen": "No LLM engine was chosen",
+    "knowledgeBaseAccessed": "Knowledge-Base accessed:",
+    "noKnowledgeBaseAccessed": "No Knowledge-Base was accessed"
+  },
+  "FlowEditor": {
+    "label": {
+      "start": "Start",
+      "loop": "Loop",
+      "condition": "Condition",
+      "vlm": "LLM",
+      "code": "Code"
+    },
+    "import": "Import",
+    "export": "Export",
+    "refresh": "Refresh",
+    "chatFlow": "ChatFlow",
+    "run": "Run",
+    "debug": "Debug",
+    "save": "Save",
+    "stop": "Stop",
+    "clear": "Clear",
+    "clickHere": "Click Here",
+    "startNodeExist": "Start node already exists!",
+    "saveSuccess": "Save Succeeded!",
+    "saveFailure": "Save Failed!",
+    "executionSuccess": "Execution Succeeded",
+    "debugPause": "Debug Pause!",
+    "workflowCanceled": "Workflow canceled by user!",
+    "sseError": "SSE connection failed, please try again",
+    "consecutiveInputNodes": "Error: Consecutive input nodes",
+    "consecutiveOutputNodes": "Error: Consecutive output nodes",
+    "noInputBeforeOutput": "No input node found before output node!",
+    "cancelFailed": "Cancel failed: ",
+    "saveCustomNodeFailed": "Save failed, please export workflow backup and check network!",
+    "imageNameVersionRequired": "Please write your Image Name and Image Version or close 'Commit Runtime Environment' checkbox before running LLM node!",
+    "questionRequiredForNode": "Please write your question to AI for node \"{nodeName}\" before running LLM node!",
+    "invalidWorkflowFile": "Invalid workflow file format",
+    "confirmClearChatflow": "Confirm clear this Chatflow?",
+    "defaultOutput": "Output will be shown here",
+    "vlmOutputPlaceholder": "This area displays the Node output during workflow execution.",
+    "vlmChatPlaceholder": "To extract global variables from the output, ensure prompt LLM/VLM to output them with json format, e.g.,\n '{\"output\":\"AIoutput\"'}.\n\nAdditionally, you can directly assign the LLM response to a global variable below:",
+    "awaitRunning": "Awaiting execution...",
+    "autoSaveSuccess": "Workflow {workflowName} auto-save successfully",
+    "autoSaveFailure": "Workflow {workflowName} auto-save failed",
+    "importWorkflowAlert": "Importing the workflow will overwrite the current content. Do you want to continue?",
+    "emptyNodeName": "Node name cannot be empty!",
+    "spaceNodeName": "Spaces are not allowed in node names!",
+    "duplicateNodeName": "Node name already exists!",
+    "nodeExecutionSuccess": "Node execution success!"
+  },
+  "WorkflowLeftSideBar": {
+    "addWorkflow": "Add Workflow",
+    "rename": "Rename",
+    "delete": "Delete",
+    "confirmDelete": "Confirm the deletion of workflow \"{flowName}\"?"
+  },
+  "NodeTypeSelector": {
+    "baseNodeSection": "Base Node",
+    "customNodeSection": "Custom Node",
+    "searchPlaceholder": "Search Nodes...",
+    "deleteConfirm": "Confirm the deletion of Custom Node \"{nodeName}\"?",
+    "label": {
+      "start": "Start",
+      "loop": "Loop",
+      "condition": "Condition",
+      "vlm": "LLM",
+      "code": "Code"
+    }
+  },
+  "SaveCustomNode": {
+    "title": "New Custom Node",
+    "placeholder": "Write your Custom Node name...",
+    "cancel": "Cancel",
+    "confirm": "Yes"
+  },
+  "WorkflowTopBar": {
+    "title": "My Work-Flow",
+    "searchPlaceholder": "Search Work-Flows..."
+  },
+  "StartNode": {
+    "description": {
+      "title": "Description",
+      "editButton": "Edit",
+      "previewButton": "Preview",
+      "description": "No description found",
+      "editingPlaceholder": "Enter Markdown content here..."
+    },
+    "globalVariable": {
+      "title": "Global Variable",
+      "placeholder": "Variable Name",
+      "addButton": "Click to Add",
+      "variableValuePlaceholder": "Support Python variable types",
+      "noVariable": "No variables detected. Please add one if required for your workflow.",
+      "initPrefix": "Init: "
+    },
+    "output": {
+      "title": "Output"
+    }
+  },
+  "VlmNode": {
+    "saveNode": "Save Node",
+    "description": "Description",
+    "edit": "Edit",
+    "preview": "Preview",
+    "noDescription": "No description found",
+    "editingPlaceholder": "Enter Markdown content here...",
+    "globalVariable": "Global Variable",
+    "variableName": "Variable Name",
+    "clickToAdd": "Click to Add",
+    "variableValuePlaceholder": "Support Python variable types",
+    "noVariableFound": "No variables detected. Please add one if required for your workflow.",
+    "init": "Init: ",
+    "prompt": "Prompt",
+    "moreSettings": "More Settings",
+    "input": "Input",
+    "changeInputStyle": "Change Input Style",
+    "useChatflowUserInput": "Use Chatflow User Input",
+    "predefinedInput": "Predefined Input: ",
+    "inputPlaceholder": "Global variables in the input should be wrapped with double curly braces, e.g., '{variable'}.",
+    "llmResponse": "LLM Response",
+    "runTest": "Run Test",
+    "output": "Output",
+    "debug": "Debug",
+    "chatflow": "ChatFlow",
+    "setAsChatflowUserInput": "Set As Chatflow User Input",
+    "setAsChatflowAIResponse": "Set As Chatflow AI Response",
+    "useConversationMemory": "Use Conversation Memory",
+    "mcpTools": "MCP Tools",
+    "testError": "Please write your question to AI before running LLM node!",
+    "llmResponsePlaceholder": "LLM Reponse ="
+  },
+  "FunctionNode": {
+    "saveNode": "Save Node",
+    "description": {
+      "title": "Description",
+      "preview": "Preview",
+      "edit": "Edit",
+      "placeholder": "Enter Markdown content here...",
+      "noDescription": "No description found"
+    },
+    "globalVariable": {
+      "title": "Global Variable",
+      "noVariables": "No variables detected. Please add one if required for your workflow.",
+      "variableNamePlaceholder": "Variable Name",
+      "clickToAdd": "Click to Add",
+      "variableValuePlaceholder": "Support Python variable types",
+      "initPrefix": "Init: "
+    },
+    "pipDependencies": {
+      "title": "Pip Dependencies",
+      "sandboxImage": "Sandbox Image:",
+      "commitEnvironment": "Commit Runtime Environment",
+      "imageName": "Image Name:",
+      "imageNamePlaceholder": "eg. python-sandbox",
+      "imageVersion": "Image Version:",
+      "imageVersionPlaceholder": "eg. 1.0",
+      "instruction": "Install dependencies once per workflow on a single node - no redundant installations across other nodes needed.",
+      "packageNamePlaceholder": "Package Name",
+      "packageVersionPlaceholder": "Default Package Version",
+      "clickToAdd": "Click to Add",
+      "noPackages": "No packages detected. Please install dependencies if needed for execution.",
+      "mirrorUrl": "Mirror Url",
+      "mirrorUrlPlaceholder": "Optional"
+    },
+    "codeEditor": {
+      "title": "Code Editor",
+      "runTest": "Run Test"
+    },
+    "output": {
+      "title": "Output",
+      "debug": "Debug",
+      "running": "Code Running...",
+      "errorConnect": "Error connect: "
+    },
+    "deleteImage": {
+      "confirmMessage": "Confirm the deletion of Image \"{imageName}\"?"
+    },
+    "alert": {
+      "imageNameVersionRequired": "Please write your Image Name and Image Version or close \"Commit Runtime Environment\" checkbox before running LLM node!",
+      "packageExists": "Package {packageName} already exists",
+      "cannotDeleteImage": "Can not delete image, image may have dependent child images!"
+    }
+  },
+  "LoopNode": {
+    "saveNode": "Save Node",
+    "description": "Description",
+    "edit": "Edit",
+    "preview": "Preview",
+    "descriptionPlaceholder": "Enter Markdown content here...",
+    "noDescription": "No description found",
+    "globalVariable": "Global Variable",
+    "variableNamePlaceholder": "Variable Name",
+    "clickToAdd": "Click to Add",
+    "variableValuePlaceholder": "Support Python variable types",
+    "noVariableFound": "No variables detected. Please add one if required for your workflow.",
+    "initPrefix": "Init: ",
+    "loopSettings": "Loop Settings",
+    "loopType": "Loop Type",
+    "countOption": "count",
+    "conditionOption": "condition",
+    "maxCountLabel": "Max Count",
+    "breakConditionLabel": "Break Condition",
+    "conditionPlaceholder": "Support Python expression",
+    "output": "Output",
+    "debug": "Debug"
+  },
+  "ConditionNode": {
+    "saveNode": "Save Node",
+    "description": {
+      "title": "Description",
+      "edit": "Edit",
+      "preview": "Preview",
+      "descriptionPlaceholder": "Enter Markdown content here...",
+      "noDescription": "No description found"
+    },
+    "globalVariable": {
+      "title": "Global Variable",
+      "placeholder": "Variable Name",
+      "addButton": "Click to Add",
+      "variableValuePlaceholder": "Support Python variable types",
+      "noVariable": "No variables detected. Please add one if required for your workflow.",
+      "initValue": "Init: "
+    },
+    "condition": {
+      "title": "Pass Condition",
+      "runTest": "Run Test",
+      "notConnected": "Please connect the node before setting the connection conditions",
+      "placeholder": "Support Python expression",
+      "label": "Condition-"
+    },
+    "output": {
+      "title": "Output",
+      "debug": "Debug"
+    }
+  },
+  "WorkflowKnowledgeConfigModal": {
+    "title": "Configure Knowledge Base",
+    "addKnowledgeBase": "Add Knowledge-Base",
+    "tutorials": "Tutorials: Click top-right menu icon",
+    "llmSettings": "LLM Settings",
+    "llmEngine": "LLM Engine",
+    "addNewConfiguration": "Add New Configuration",
+    "llmUrl": "LLM Url",
+    "apiKey": "API Key",
+    "chooseDB": "Choose DB",
+    "advancedSettings": "Advanced Settings",
+    "temperature": "Temperature",
+    "range_0_1": "(0-1)",
+    "useModelDefault": "Use Model Default",
+    "maxToken": "Max Token",
+    "range_1024_1048576": "(1024-1048576)",
+    "topP": "Top-P",
+    "knowledgeBaseTopK": "Knowledge-Base Top-K",
+    "range_1_30": "(1-30)",
+    "retrievalScoreThreshold": "Retrieval Score Threshold",
+    "suggestedRetrievalScoreThreshold": "Jina-embeddings-v4 suggested value: around 4",
+    "range_0_20": "(0-20)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "deleteModelConfigConfirmation": "Confirm the deletion of model configuration "
+  },
+  "McpConfig": {
+    "title": "Configure MCP Tools",
+    "mcpNamePlaceholder": "MCP Name",
+    "addButton": "Click to Add",
+    "noToolsFound": "No MCP Tools Found.",
+    "noToolDescriptionFound": "No function description found",
+    "mcpServerUrl": "MCP Server Url",
+    "refreshTools": "Refresh Tools",
+    "advancedSettings": "Advanced Settings",
+    "useFunctionTool": "Use Function Tool",
+    "useThisMCPTools": "Use This MCP Tools",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "confirmDeleteMcpConfig": "Confirm the deletion of MCP configuration \"{name}\""
+  },
+  "McpAdvancedSettings": {
+    "title": "Configure MCP Tools",
+    "headers": "Headers",
+    "addHeaders": "Add Headers",
+    "timeoutSettings": "Timeout Settings",
+    "timeout": "Timeout (s)",
+    "sseReadTimeout": "SSE Read Timeout (s)",
+    "keyPlaceholder": "Key",
+    "valuePlaceholder": "Value",
+    "timeoutPlaceholder": "Default: 5s",
+    "sseTimeoutPlaceholder": "Default: 300s",
+    "cancel": "Cancel",
+    "save": "Save",
+    "mcpConfigNotFound": "MCP configuration not found for this node."
+  },
+  "WorkflowOutput": {
+    "chatflow": "Chatflow",
+    "return": "Return",
+    "chatflowHistory": "Chatflow History",
+    "globalVariable": "Global Variable",
+    "variableName": "Variable Name",
+    "clickToAdd": "Click to Add",
+    "variableValuePlaceholder": "Support Python variable types",
+    "noVariable": "No variables detected. Please add one if required for your workflow.",
+    "initValue": "Init: ",
+    "llmResponse": "LLM Response",
+    "llmHint": "The send button becomes active when reaching an LM/VLM node with the \"Set As Chatflow User Input\" checkbox selected. To enable user input, check the \"Set As Chatflow User Input\" option in the LLM/VLM node.",
+    "waitingRun": "Waiting for 'Run'",
+    "shiftEnter": "Send: Shift+Enter",
+    "shiftEnterFullScreen": "Press Shift+Enter to send...",
+    "unsupportedFile": "Unsupport file type: ",
+    "uploadError": "Upload error",
+    "embeddingError": "Embedding error!",
+    "downloadFailed": "Download failed!",
+    "clearHistory": "Clear History",
+    "confirmDelete": "Confirm the deletion of All Chatflow？",
+    "uploadButton": {
+      "send": "Send",
+      "uploading": "Upload",
+      "processing": "Processing",
+      "failed": "Failed",
+      "uploadFailed": "Upload Failed"
+    }
+  },
+  "About": {
+    "title": "About",
+    "acknowledgements": "Acknowledgements",
+    "version": "Version",
+    "repository": "Repository",
+    "author": "Author",
+    "license": "License",
+    "thankYouContent": "DaziKnow is maintained by daziwei as a RAG knowledge base assistant for document management and intelligent Q&A.",
+    "versionText": "DaziKnow v1.0.0",
+    "authorName": "daziwei",
+    "locationLabel": "Location",
+    "location": "China",
+    "githubProfile": "GitHub Profile",
+    "email": "Email",
+    "close": "Close"
+  },
+  "Support": {
+    "title": "Support",
+    "version": "Version",
+    "versionText": "DaziKnow v1.0.0",
+    "bugReport": "Report an Issue",
+    "community": "Project Links",
+    "wechatGroup": "1. Knowledge base docs",
+    "wechatOfficialAccount": "2. Deployment notes",
+    "bilibili": "3. Local demo checklist",
+    "zhihu": "4. Interview notes",
+    "githubRepo": "5. GitHub Repository",
+    "authorEmail": "6. Maintainer: {email}",
+    "close": "Close"
+  }
+}

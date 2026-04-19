@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "一般讨论和求助"
+    url: https://github.com/daziwei/daziknow/discussions
+    about: 一般讨论，使用求助，其他问题...
+  - name: "Discussions"
+    url: https://github.com/daziwei/daziknow/discussions
+    about: General Discussion, Usage Help, Other Questions...
