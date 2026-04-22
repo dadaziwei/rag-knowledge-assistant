@@ -13,11 +13,9 @@ DaziKnow 是一个面向企业和团队知识管理场景的 RAG 知识库智能
 - 文档上传与对象存储：原始文件写入 MinIO，数据库只保存文件元数据和对象 key。
 - Kafka 异步文件处理：上传接口快速返回，后台 Consumer 负责解析、向量化和入库。
 - 多格式文档解析：支持 PDF、图片、TXT/MD、DOCX，以及基于 unoserver/LibreOffice 的 Office 文档转换。
-- 向量检索：使用 Milvus 保存文档页级向量，问答时按 Top-K 召回相关内容。
-- 多租户权限隔离：向量写入时携带 `tenant_id`、`org_id`、`owner_username`、`knowledge_db_id`、`tags` 等 metadata，检索阶段执行过滤。
-- DeepSeek 问答：通过 OpenAI-compatible API 接入 DeepSeek，并适配 `deepseek-chat` 的文本上下文输入。
-- 流式响应：FastAPI SSE/WebSocket 将模型输出增量推送到前端。
-- Token 状态管理：JWT + Redis 管理登录状态、刷新 token 和任务进度。
+- 向量检索与权限过滤：Milvus 保存文档页级向量，并通过 metadata 过滤租户、组织、用户和知识库。
+- DeepSeek 流式问答：通过 OpenAI-compatible API 接入 DeepSeek，并使用 SSE/WebSocket 返回增量答案。
+- JWT + Redis 状态管理：支持登录状态、刷新 token 和任务进度跟踪。
 
 ## 技术栈
 
@@ -41,7 +39,7 @@ DaziKnow 是一个面向企业和团队知识管理场景的 RAG 知识库智能
 Copy-Item .env.example .env
 ```
 
-2. 修改 `.env`，至少填入你自己的密钥和密码：
+2. 修改 `.env`，填入你自己的密钥和密码。示例文件中只保留占位符：
 
 ```text
 DEEPSEEK_API_KEY=replace-with-your-deepseek-api-key
@@ -67,9 +65,34 @@ docker compose -f docker-compose-no-local-embedding.yml --profile document-conve
 http://localhost:18080
 ```
 
-## 系统主链路
+## 教程索引
 
-### 文档上传链路
+教程统一放在 [tutorials](./tutorials/README.md) 目录，README 只保留入口。
+
+### 学习路线
+
+- [教程总览](./tutorials/README.md)
+- [学习路线总览](./tutorials/learning-path/README.md)
+- [Day 1：系统入口、配置与服务拓扑](./tutorials/learning-path/day-01-system-overview.md)
+
+### 后端链路
+
+- [后端链路总览](./tutorials/backend/README.md)
+- [async / await 基础](./tutorials/backend/async-await.md)
+- [文件上传接口：base.py](./tutorials/backend/upload-api.md)
+- [Kafka Producer 与 Consumer](./tutorials/backend/kafka-producer-consumer.md)
+- [process_file、Milvus 与 metadata 入库](./tutorials/backend/process-file-and-milvus.md)
+
+### 面试复盘
+
+- [面试复盘总览](./tutorials/interview/README.md)
+- [RAG 项目常见面试题](./tutorials/interview/rag-project-qa.md)
+
+### 安全规范
+
+- [敏感信息与 GitHub 发布规范](./tutorials/security/secret-management.md)
+
+## 核心链路速览
 
 ```text
 前端上传文件
@@ -82,130 +105,12 @@ Redis 初始化任务进度
   ↓
 Kafka 写入异步处理任务
   ↓
-Consumer 解析文件并生成页面图片/文本
+Consumer 调用 process_file
   ↓
-Embedding 服务生成向量
+文档转换、向量化、Milvus 入库
   ↓
-Milvus 写入向量和权限 metadata
-  ↓
-MongoDB 保存文件、页面和知识库关系
+RAG 检索时按 metadata 做权限过滤
 ```
-
-面试表达：
-
-> 文档上传接口不会同步完成解析和向量化，而是将原始文件保存到 MinIO 后，通过 Kafka 投递异步任务。后台 Consumer 从 Kafka 消费任务，执行文档解析、向量化和 Milvus 入库。这样可以避免大文件上传阻塞接口，同时通过 Redis 记录任务进度，让前端能够看到处理状态。
-
-### RAG 问答链路
-
-```text
-用户选择知识库并提问
-  ↓
-后端读取会话配置中的知识库列表
-  ↓
-问题生成 query embedding
-  ↓
-Milvus 按 collection + metadata filter 检索
-  ↓
-Top-K 结果排序和裁剪
-  ↓
-加载命中文件和上下文
-  ↓
-将知识库上下文注入 prompt
-  ↓
-DeepSeek 生成答案
-  ↓
-SSE/WebSocket 流式返回给前端
-```
-
-## 学习路线
-
-这部分是为面试复盘和二次开发准备的。建议不要一开始就硬啃所有代码，而是按链路看。
-
-### Day 1：系统入口、配置与服务拓扑
-
-目标：先建立全局地图，知道系统由哪些服务组成，请求从哪里进入。
-
-推荐顺序：
-
-```text
-docker-compose-no-local-embedding.yml
-  ↓
-backend/app/core/config.py
-  ↓
-backend/app/main.py
-  ↓
-backend/app/api/__init__.py
-```
-
-你需要掌握：
-
-- Docker Compose 中每个容器的职责。
-- `.env` 如何进入后端配置。
-- FastAPI 启动时初始化了哪些资源。
-- API 路由是如何按业务模块注册的。
-
-详细文档：[Day 1 系统入口、配置与服务拓扑](./docs/docs/day1-architecture.md)
-
-### Day 2：文档上传、Kafka Consumer 与向量入库
-
-目标：看懂简历里最关键的一条链路：文件上传后如何异步解析、向量化并进入 Milvus。
-
-推荐顺序：
-
-```text
-backend/app/api/endpoints/base.py
-  ↓
-backend/app/utils/kafka_producer.py
-  ↓
-backend/app/utils/kafka_consumer.py
-  ↓
-backend/app/rag/utils.py
-  ↓
-backend/app/db/milvus.py
-```
-
-你需要掌握：
-
-- `await` 为什么用于 Redis、MinIO、Kafka、Milvus 这类耗时操作。
-- 上传接口为什么只保存文件和投递任务，不直接解析。
-- Kafka Producer 和 Consumer 分别负责什么。
-- `process_file` 如何串起文件读取、解析、向量化和入库。
-- metadata 如何保证知识库和用户权限隔离。
-
-详细文档：[Day 2 文档上传、Kafka Consumer 与向量入库](./docs/docs/day2-upload-kafka-consumer.md)
-
-## 文件级代码导读
-
-| 文件 | 你应该怎么看 |
-| --- | --- |
-| `backend/app/api/endpoints/base.py` | 知识库和文件上传入口，重点看 `upload_multiple_files` |
-| `backend/app/utils/kafka_producer.py` | 发送文件处理任务，重点看 `send_embedding_task` |
-| `backend/app/utils/kafka_consumer.py` | 后台消费 Kafka 消息，重点看 `consume_messages` 和 `process_message` |
-| `backend/app/rag/utils.py` | 文件处理核心，重点看 `process_file`、`generate_embeddings`、`insert_to_milvus` |
-| `backend/app/db/milvus.py` | 向量库管理，重点看动态字段、metadata filter 和 `insert/search` |
-| `backend/app/rag/llm_service.py` | RAG 问答核心，重点看检索、上下文拼接和 DeepSeek 调用 |
-
-## 常见面试问题
-
-**为什么要用 Kafka？**
-
-因为文档解析、Office 转换、向量化都是耗时任务。如果上传接口同步执行这些逻辑，大文件容易导致接口阻塞或超时。Kafka 可以把上传和处理解耦，后续也可以横向扩展多个 Consumer 提高吞吐。
-
-**为什么要用 MinIO？**
-
-MinIO 负责保存原始文件和解析后的页面图片，避免把大文件直接存进数据库。数据库只保存文件 ID、文件名、对象 key、知识库关系等元数据，结构更清晰，也方便后续重新解析或下载。
-
-**metadata 有什么用？**
-
-metadata 记录文档归属和权限边界，例如租户、组织、用户、知识库和标签。向量检索时不仅要按语义相似度召回，还要按 metadata 做过滤，避免用户检索到没有权限的内容。
-
-**`await` 是什么？**
-
-`await` 表示当前操作需要等待外部系统返回结果，例如 Redis 写入、MinIO 上传、Kafka 发送消息、请求大模型 API。等待期间，FastAPI 可以继续处理其他请求，避免整个服务被一个慢操作卡住。
-
-**Kafka Consumer 在项目中做什么？**
-
-Consumer 是后台任务处理器。它不直接接收用户请求，而是持续监听 Kafka topic，拿到 Producer 发来的文件处理消息后，更新 Redis 任务状态，并调用 `process_file` 完成解析、向量化和入库。
 
 ## 简历描述建议
 
