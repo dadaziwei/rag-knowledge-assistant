@@ -60,6 +60,10 @@ export const getChatHistory = async (username: string) => {
   return api.get("/chat/users/" + username + "/conversations");
 };
 
+export const getFeedbackInsights = async (username: string) => {
+  return api.get("/chat/users/" + username + "/feedback-insights");
+};
+
 export const renameChat = async (conversationId: string, chatName: string) => {
   return api.post("/chat/conversations/rename", {
     conversation_id: conversationId,

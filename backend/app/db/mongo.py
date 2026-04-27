@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import Counter, defaultdict
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import DeleteMany, UpdateMany
 from app.core.config import settings
@@ -526,6 +526,105 @@ class MongoDB:
         if result.matched_count == 0:
             return {"status": "failed", "message": "Conversation turn not found"}
         return {"status": "success", "feedback": feedback}
+
+    async def get_feedback_insights(self, username: str) -> Dict[str, Any]:
+        conversations = await self.db.conversations.find(
+            {"username": username, "is_delete": False},
+            {"conversation_id": 1, "turns": 1},
+        ).to_list(length=None)
+        knowledge_bases = await self.db.knowledge_bases.find(
+            {"username": username},
+            {"knowledge_base_id": 1, "knowledge_base_name": 1},
+        ).to_list(length=None)
+
+        knowledge_base_names = {
+            item["knowledge_base_id"]: item["knowledge_base_name"]
+            for item in knowledge_bases
+        }
+
+        helpful_count = 0
+        unhelpful_count = 0
+        knowledge_gap_counter: Counter[str] = Counter()
+        recent_unhelpful_questions = []
+
+        for conversation in conversations:
+            for turn in conversation.get("turns", []):
+                feedback = (turn.get("ai_message") or {}).get("feedback")
+                if not feedback:
+                    continue
+
+                rating = feedback.get("rating")
+                if rating == "helpful":
+                    helpful_count += 1
+                    continue
+                if rating != "unhelpful":
+                    continue
+
+                unhelpful_count += 1
+                file_used = turn.get("file_used") or []
+                kb_ids = sorted(
+                    {
+                        item.get("knowledge_db_id")
+                        for item in file_used
+                        if item.get("knowledge_db_id")
+                    }
+                )
+                for kb_id in kb_ids:
+                    knowledge_gap_counter[kb_id] += 1
+
+                user_message = turn.get("user_message") or {}
+                question = ""
+                for item in user_message.get("content", []):
+                    if item.get("type") == "text":
+                        question = item.get("text", "")
+                        break
+
+                recent_unhelpful_questions.append(
+                    {
+                        "conversation_id": conversation["conversation_id"],
+                        "message_id": turn.get("message_id", ""),
+                        "question": question,
+                        "updated_at": feedback.get("updated_at", ""),
+                        "knowledge_base_names": [
+                            knowledge_base_names.get(
+                                kb_id,
+                                "用户上传" if str(kb_id).startswith("temp_") else kb_id,
+                            )
+                            for kb_id in kb_ids
+                        ],
+                    }
+                )
+
+        total_feedback = helpful_count + unhelpful_count
+        helpful_rate = (
+            round(helpful_count / total_feedback, 4) if total_feedback else 0.0
+        )
+        top_knowledge_gaps = [
+            {
+                "knowledge_base_id": kb_id,
+                "knowledge_base_name": knowledge_base_names.get(
+                    kb_id, "用户上传" if str(kb_id).startswith("temp_") else kb_id
+                ),
+                "unhelpful_count": count,
+            }
+            for kb_id, count in knowledge_gap_counter.most_common(3)
+        ]
+        recent_unhelpful_questions.sort(
+            key=lambda item: item.get("updated_at", ""),
+            reverse=True,
+        )
+
+        return {
+            "status": "success",
+            "insights": {
+                "total_feedback": total_feedback,
+                "helpful_count": helpful_count,
+                "unhelpful_count": unhelpful_count,
+                "helpful_rate": helpful_rate,
+                "top_knowledge_gaps": top_knowledge_gaps,
+                "recent_unhelpful_questions": recent_unhelpful_questions[:3],
+            },
+        }
 
     async def delete_conversation(self, conversation_id: str) -> dict:
         """根据 conversation_id 删除指定会话，并删除关联的临时知识库"""

@@ -15,6 +15,29 @@ export interface MessageFeedback {
   updated_at?: string;
 }
 
+export interface FeedbackInsightKnowledgeBase {
+  knowledge_base_id: string;
+  knowledge_base_name: string;
+  unhelpful_count: number;
+}
+
+export interface FeedbackInsightQuestion {
+  conversation_id: string;
+  message_id: string;
+  question: string;
+  updated_at: string;
+  knowledge_base_names: string[];
+}
+
+export interface FeedbackInsights {
+  total_feedback: number;
+  helpful_count: number;
+  unhelpful_count: number;
+  helpful_rate: number;
+  top_knowledge_gaps: FeedbackInsightKnowledgeBase[];
+  recent_unhelpful_questions: FeedbackInsightQuestion[];
+}
+
 export interface Message {
   type: "text" | "image" | "file" | "thinking" | "baseFile";
   content: string | null;

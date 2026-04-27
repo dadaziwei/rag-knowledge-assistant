@@ -6,6 +6,7 @@
 
 - [01 回答引用与来源追踪](./01-answer-citation.md)
 - [02 用户反馈闭环](./02-user-feedback-loop.md)
+- [03 知识缺口分析与反馈洞察](./03-feedback-insights.md)
 
 每做完一个可以写进简历的小功能，就在这里补一篇教程，固定讲清楚：
 

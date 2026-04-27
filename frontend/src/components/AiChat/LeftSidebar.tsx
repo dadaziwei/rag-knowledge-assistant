@@ -1,6 +1,6 @@
 // components/Sidebar.tsx
 import React, { useEffect, useRef, useState } from "react";
-import { Chat } from "@/types/types";
+import { Chat, FeedbackInsights } from "@/types/types";
 import useChatStore from "@/stores/chatStore";
 import { getTimeLabel } from "@/utils/date";
 import ConfirmDialog from "../ConfirmDialog";
@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 interface SidebarProps {
   onNewChat: () => void;
   chatHistory: Chat[];
+  feedbackInsights: FeedbackInsights | null;
   onSelectChat: (inputChatId: string, isRead: boolean) => void;
   ondeleteAllChat: (chatHistory: Chat[]) => void;
   ondeleteChat: (chat: Chat) => void;
@@ -19,6 +20,7 @@ interface SidebarProps {
 const LeftSidebar: React.FC<SidebarProps> = ({
   onNewChat,
   chatHistory,
+  feedbackInsights,
   onSelectChat,
   ondeleteAllChat,
   ondeleteChat,
@@ -221,6 +223,97 @@ const LeftSidebar: React.FC<SidebarProps> = ({
           <div className="text-sm">{t("refresh")}</div>
         </div>
       </div>
+      {feedbackInsights && feedbackInsights.total_feedback > 0 && (
+        <div className="w-full rounded-lg border border-[var(--rag-border)] bg-[var(--rag-panel)] p-3 text-sm text-[var(--rag-text)]">
+          <div className="flex items-center gap-2 font-semibold">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 13.5 9 18.75l11.25-13.5"
+              />
+            </svg>
+            <span>{t("feedbackInsightsTitle")}</span>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+            <div className="rounded-md border border-[var(--rag-border)] bg-[var(--rag-panel-soft)] p-2">
+              <div className="text-[var(--rag-muted)]">{t("feedbackTotal")}</div>
+              <div className="mt-1 text-base font-semibold">
+                {feedbackInsights.total_feedback}
+              </div>
+            </div>
+            <div className="rounded-md border border-[var(--rag-border)] bg-[var(--rag-panel-soft)] p-2">
+              <div className="text-[var(--rag-muted)]">{t("feedbackHelpfulRate")}</div>
+              <div className="mt-1 text-base font-semibold">
+                {(feedbackInsights.helpful_rate * 100).toFixed(0)}%
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-2 text-xs">
+            <span className="rounded-full bg-emerald-500/12 px-2 py-1 text-emerald-700">
+              {t("feedbackHelpfulCount", {
+                count: feedbackInsights.helpful_count,
+              })}
+            </span>
+            <span className="rounded-full bg-amber-500/12 px-2 py-1 text-amber-700">
+              {t("feedbackNeedsWorkCount", {
+                count: feedbackInsights.unhelpful_count,
+              })}
+            </span>
+          </div>
+          {feedbackInsights.top_knowledge_gaps.length > 0 && (
+            <div className="mt-4">
+              <div className="text-xs font-semibold text-[var(--rag-muted)]">
+                {t("feedbackKnowledgeGapTitle")}
+              </div>
+              <div className="mt-2 flex flex-col gap-2">
+                {feedbackInsights.top_knowledge_gaps.map((item) => (
+                  <div
+                    key={item.knowledge_base_id}
+                    className="flex items-center justify-between gap-2 rounded-md border border-[var(--rag-border)] bg-[var(--rag-panel-soft)] px-2 py-1.5 text-xs"
+                  >
+                    <span className="truncate">{item.knowledge_base_name}</span>
+                    <span className="shrink-0 text-amber-700">
+                      {t("feedbackNeedsWorkShort", {
+                        count: item.unhelpful_count,
+                      })}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {feedbackInsights.recent_unhelpful_questions.length > 0 && (
+            <div className="mt-4">
+              <div className="text-xs font-semibold text-[var(--rag-muted)]">
+                {t("feedbackRecentQuestionsTitle")}
+              </div>
+              <div className="mt-2 flex flex-col gap-2">
+                {feedbackInsights.recent_unhelpful_questions.map((item) => (
+                  <div
+                    key={item.message_id}
+                    className="rounded-md border border-[var(--rag-border)] bg-[var(--rag-panel-soft)] px-2 py-1.5 text-xs"
+                  >
+                    <div className="line-clamp-2">{item.question || t("feedbackUnknownQuestion")}</div>
+                    {item.knowledge_base_names.length > 0 && (
+                      <div className="mt-1 text-[var(--rag-muted)] line-clamp-1">
+                        {item.knowledge_base_names.join(" / ")}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       {/* 聊天列表 */}
       <div className="border-b border-[var(--rag-border)] w-full"></div>
       <div className="px-1 w-full flex-1 overflow-y-auto scrollbar-hide">

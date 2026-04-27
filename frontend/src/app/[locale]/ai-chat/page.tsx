@@ -11,6 +11,7 @@ import {
   Chat,
   Citation,
   FileResponse,
+  FeedbackInsights,
   FileUsed,
   MessageFeedback,
   ModelConfig,
@@ -22,6 +23,7 @@ import {
   createConversation,
   deleteAllConversations,
   deleteConversations,
+  getFeedbackInsights,
   getChatContent,
   getChatHistory,
   renameChat,
@@ -41,6 +43,9 @@ const AIChat: React.FC = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
+  const [feedbackInsights, setFeedbackInsights] = useState<FeedbackInsights | null>(
+    null
+  );
   const { user } = useAuthStore();
   const [conversationName, setConversationName] = useState<string>("");
   const [sendDisabled, setSendDisabled] = useState(false);
@@ -117,6 +122,17 @@ const AIChat: React.FC = () => {
     fetchModelConfig();
   }, [fetchModelConfig]); // Added fetchModelConfig
 
+  const fetchFeedbackInsightSummary = useCallback(async () => {
+    if (user?.name) {
+      try {
+        const response = await getFeedbackInsights(user.name);
+        setFeedbackInsights(response.data.insights);
+      } catch (error) {
+        console.error("Error fetching feedback insights:", error);
+      }
+    }
+  }, [user?.name]);
+
   const fetchChatHistory = useCallback(async () => {
     if (user?.name) {
       try {
@@ -143,6 +159,10 @@ const AIChat: React.FC = () => {
       setChatId(user?.name + "_" + uniqueId);
     }
   }, [user?.name, chatId, conversationName, setChatId, fetchChatHistory]); // Added fetchChatHistory
+
+  useEffect(() => {
+    fetchFeedbackInsightSummary();
+  }, [fetchFeedbackInsightSummary]);
 
   const handleNewChat = async () => {
     setMessages([]);
@@ -270,6 +290,7 @@ const AIChat: React.FC = () => {
         try {
           await deleteAllConversations(user.name);
           handleNewChat();
+          fetchFeedbackInsightSummary();
         } catch (error) {
           console.error("Error fetching chat history:", error);
         }
@@ -291,6 +312,7 @@ const AIChat: React.FC = () => {
             )
           );
           await deleteConversations(chat.conversationId);
+          fetchFeedbackInsightSummary();
           // 如果当前对话被删除，重置消息和对话 ID
           if (chatId === chat.conversationId) {
             handleNewChat();
@@ -669,11 +691,12 @@ const AIChat: React.FC = () => {
       try {
         const response = await submitChatFeedback(conversationId, messageId, rating);
         updateFeedbackState(messageId, response.data.feedback);
+        fetchFeedbackInsightSummary();
       } catch (error) {
         console.error("Error submitting chat feedback:", error);
       }
     },
-    [chatId, updateFeedbackState]
+    [chatId, fetchFeedbackInsightSummary, updateFeedbackState]
   );
 
   return (
@@ -683,6 +706,7 @@ const AIChat: React.FC = () => {
         <LeftSidebar
           onNewChat={handleNewChat}
           chatHistory={chatHistory}
+          feedbackInsights={feedbackInsights}
           onSelectChat={handleSelectChat}
           ondeleteAllChat={handledeleteAllChat}
           ondeleteChat={handledeleteChat}

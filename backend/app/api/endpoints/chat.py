@@ -141,6 +141,16 @@ async def get_conversations_by_user(
     ]
 
 
+@router.get("/users/{username}/feedback-insights", response_model=dict)
+async def get_feedback_insights(
+    username: str,
+    db: MongoDB = Depends(get_mongo),
+    current_user: User = Depends(get_current_user),
+):
+    await verify_username_match(current_user, username)
+    return await db.get_feedback_insights(username)
+
+
 @router.post("/conversations/{conversation_id}/messages/{message_id}/feedback", response_model=dict)
 async def submit_conversation_feedback(
     conversation_id: str,

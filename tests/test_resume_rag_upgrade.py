@@ -177,6 +177,29 @@ class ResumeRagUpgradeContractTests(unittest.TestCase):
         self.assertIn('feedbackRating === "helpful"', chat_message)
         self.assertIn('feedbackRating === "unhelpful"', chat_message)
 
+    def test_feedback_insight_contracts_are_present(self):
+        mongo = read("backend/app/db/mongo.py")
+        chat_endpoint = read("backend/app/api/endpoints/chat.py")
+        chat_api = read("frontend/src/lib/api/chatApi.ts")
+        chat_page = read("frontend/src/app/[locale]/ai-chat/page.tsx")
+        sidebar = read("frontend/src/components/AiChat/LeftSidebar.tsx")
+        types_file = read("frontend/src/types/types.ts")
+
+        self.assertIn("async def get_feedback_insights(self, username: str)", mongo)
+        self.assertIn("top_knowledge_gaps", mongo)
+        self.assertIn("recent_unhelpful_questions", mongo)
+        self.assertIn('/users/{username}/feedback-insights', chat_endpoint)
+        self.assertIn("return await db.get_feedback_insights(username)", chat_endpoint)
+        self.assertIn("export interface FeedbackInsights", types_file)
+        self.assertIn("export interface FeedbackInsightKnowledgeBase", types_file)
+        self.assertIn("export interface FeedbackInsightQuestion", types_file)
+        self.assertIn("getFeedbackInsights", chat_api)
+        self.assertIn("fetchFeedbackInsightSummary", chat_page)
+        self.assertIn("feedbackInsights={feedbackInsights}", chat_page)
+        self.assertIn("feedbackInsightsTitle", sidebar)
+        self.assertIn("feedbackKnowledgeGapTitle", sidebar)
+        self.assertIn("feedbackRecentQuestionsTitle", sidebar)
+
 
 if __name__ == "__main__":
     unittest.main()
