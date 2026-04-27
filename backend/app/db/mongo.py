@@ -1,3 +1,4 @@
+import asyncio
 from collections import Counter, defaultdict
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import DeleteMany, UpdateMany
@@ -511,21 +512,24 @@ class MongoDB:
             "rating": rating,
             "updated_at": beijing_time_now().isoformat(),
         }
-        result = await self.db.conversations.update_one(
-            {
-                "conversation_id": conversation_id,
-                "is_delete": False,
-                "turns.message_id": message_id,
-            },
-            {
-                "$set": {
-                    "turns.$.ai_message.feedback": feedback,
-                }
-            },
-        )
-        if result.matched_count == 0:
-            return {"status": "failed", "message": "Conversation turn not found"}
-        return {"status": "success", "feedback": feedback}
+        for attempt in range(5):
+            result = await self.db.conversations.update_one(
+                {
+                    "conversation_id": conversation_id,
+                    "is_delete": False,
+                    "turns.message_id": message_id,
+                },
+                {
+                    "$set": {
+                        "turns.$.ai_message.feedback": feedback,
+                    }
+                },
+            )
+            if result.matched_count > 0:
+                return {"status": "success", "feedback": feedback}
+            if attempt < 4:
+                await asyncio.sleep(0.2)
+        return {"status": "failed", "message": "Conversation turn not found"}
 
     async def get_feedback_insights(self, username: str) -> Dict[str, Any]:
         conversations = await self.db.conversations.find(

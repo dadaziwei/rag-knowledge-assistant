@@ -331,6 +331,7 @@ class ChatService:
         total_token = 0
         completion_tokens = 0
         prompt_tokens = 0
+        client = None
         try:
             client = AsyncOpenAI(
                 # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
@@ -453,7 +454,8 @@ class ChatService:
             logger.info(
                 f"Closing OpenAI client for conversation {user_message_content.conversation_id}"
             )
-            await client.close()
+            if client is not None:
+                await client.close()
 
             # 只有在有响应内容时才保存
             if not full_response:
@@ -469,21 +471,19 @@ class ChatService:
                 "citations": citations,
             }
 
-            # 保存AI响应到mongodb
-            asyncio.create_task(
-                db.add_turn(
-                    conversation_id=user_message_content.conversation_id,
-                    message_id=message_id,
-                    parent_message_id=user_message_content.parent_id,
-                    user_message=user_message,
-                    temp_db=user_message_content.temp_db,
-                    ai_message=ai_message,
-                    file_used=file_used,
-                    status="aborted" if is_aborted else "completed",
-                    total_token=total_token,
-                    completion_tokens=completion_tokens,
-                    prompt_tokens=prompt_tokens,
-                )
+            # 在 SSE 结束前完成落库，避免前端刚显示回答就提交反馈时找不到 turn。
+            await db.add_turn(
+                conversation_id=user_message_content.conversation_id,
+                message_id=message_id,
+                parent_message_id=user_message_content.parent_id,
+                user_message=user_message,
+                temp_db=user_message_content.temp_db,
+                ai_message=ai_message,
+                file_used=file_used,
+                status="aborted" if is_aborted else "completed",
+                total_token=total_token,
+                completion_tokens=completion_tokens,
+                prompt_tokens=prompt_tokens,
             )
             logger.info(
                 f"Save conversation {user_message_content.conversation_id} to mongodb"

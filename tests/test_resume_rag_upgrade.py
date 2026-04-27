@@ -176,6 +176,9 @@ class ResumeRagUpgradeContractTests(unittest.TestCase):
         self.assertIn("onSubmitFeedback", chat_message)
         self.assertIn('feedbackRating === "helpful"', chat_message)
         self.assertIn('feedbackRating === "unhelpful"', chat_message)
+        self.assertIn("await asyncio.sleep(0.2)", mongo)
+        self.assertIn('await db.add_turn(', llm_service := read("backend/app/rag/llm_service.py"))
+        self.assertNotIn("asyncio.create_task(", llm_service)
 
     def test_feedback_insight_contracts_are_present(self):
         mongo = read("backend/app/db/mongo.py")
