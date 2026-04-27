@@ -153,6 +153,30 @@ class ResumeRagUpgradeContractTests(unittest.TestCase):
         self.assertIn("export interface Citation", types_file)
         self.assertIn("citations?: Citation[]", types_file)
 
+    def test_feedback_loop_contracts_are_present(self):
+        conversation_model = read("backend/app/models/conversation.py")
+        chat_endpoint = read("backend/app/api/endpoints/chat.py")
+        mongo = read("backend/app/db/mongo.py")
+        chat_api = read("frontend/src/lib/api/chatApi.ts")
+        chat_page = read("frontend/src/app/[locale]/ai-chat/page.tsx")
+        chat_message = read("frontend/src/components/AiChat/ChatMessage.tsx")
+        types_file = read("frontend/src/types/types.ts")
+
+        self.assertIn("class ConversationFeedbackInput", conversation_model)
+        self.assertIn('rating: Literal["helpful", "unhelpful"]', conversation_model)
+        self.assertIn('/conversations/{conversation_id}/messages/{message_id}/feedback', chat_endpoint)
+        self.assertIn("await db.update_turn_feedback(", chat_endpoint)
+        self.assertIn("async def update_turn_feedback(", mongo)
+        self.assertIn('"turns.$.ai_message.feedback": feedback', mongo)
+        self.assertIn("export interface MessageFeedback", types_file)
+        self.assertIn("feedback?: MessageFeedback | null", types_file)
+        self.assertIn("submitChatFeedback", chat_api)
+        self.assertIn("item.ai_message.feedback || null", chat_page)
+        self.assertIn("handleSubmitFeedback", chat_page)
+        self.assertIn("onSubmitFeedback", chat_message)
+        self.assertIn('feedbackRating === "helpful"', chat_message)
+        self.assertIn('feedbackRating === "unhelpful"', chat_message)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -71,6 +71,19 @@ export const getChatContent = async (conversationId: string) => {
   return api.get("/chat/conversations/" + conversationId);
 };
 
+export const submitChatFeedback = async (
+  conversationId: string,
+  messageId: string,
+  rating: "helpful" | "unhelpful"
+) => {
+  return api.post(
+    `/chat/conversations/${conversationId}/messages/${messageId}/feedback`,
+    {
+      rating,
+    }
+  );
+};
+
 export const deleteConversations = async (conversationId: string) => {
   return api.delete("/chat/conversations/" + conversationId);
 };

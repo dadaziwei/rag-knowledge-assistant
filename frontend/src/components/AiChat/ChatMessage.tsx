@@ -20,6 +20,10 @@ interface ChatMessageProps {
     tempBaseId: string,
     parentMessageId: string
   ) => void;
+  onSubmitFeedback?: (
+    messageId: string,
+    rating: "helpful" | "unhelpful"
+  ) => void;
   lastUserMessage?: () => string; // 最后一条用户消息
   sendDisabled?: boolean; // 是否禁用发送按钮
   enableOperation?: boolean; // 是否启用操作栏
@@ -38,6 +42,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   lastUserMessage = () => "",
   sendDisabled = false,
   onSendEditingMessage = () => {},
+  onSubmitFeedback = () => {},
   enableOperation = false,
   handleBranchChange = () => {},
   branchIndex = 1, // 当前分支索引
@@ -133,6 +138,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     message.from === "user" && message.type === "text"
       ? "rag-message-user"
       : "rag-message-ai";
+  const feedbackRating = message.feedback?.rating;
 
   const toggleReferences = () => {
     if (!message.messageId) {
@@ -324,6 +330,71 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
               message.from === "user" ? "pr-2 justify-end" : "justify-start"
             } ${message.from === "user" ? "text-white/80" : "text-[var(--rag-muted)]"}`}
           >
+            {message.from === "ai" &&
+              enableOperation &&
+              message.messageId &&
+              !messageEditing && (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() =>
+                      message.messageId &&
+                      onSubmitFeedback(message.messageId, "helpful")
+                    }
+                    className={`cursor-pointer flex items-center gap-1 rounded-md border px-2 py-1 transition-colors ${
+                      feedbackRating === "helpful"
+                        ? "border-emerald-500/40 bg-emerald-500/12 text-emerald-600"
+                        : "border-[var(--rag-border)] hover:border-emerald-500/40 hover:text-emerald-600"
+                    }`}
+                    aria-label={t("helpful")}
+                    title={t("helpful")}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14.25 9V5.25A2.25 2.25 0 0 0 12 3v0c-.597 0-1.17.237-1.591.659L9 5.25v4.5m5.25-.75h4.286c.621 0 1.125.504 1.125 1.125 0 .285-.108.56-.302.77l-3.797 4.104a2.25 2.25 0 0 1-1.653.726H9.75m4.5-6.75-1.5 6.75m-3-6.75H5.625c-.621 0-1.125.504-1.125 1.125v8.25c0 .621.504 1.125 1.125 1.125H8.25"
+                      />
+                    </svg>
+                    <span>{t("helpful")}</span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      message.messageId &&
+                      onSubmitFeedback(message.messageId, "unhelpful")
+                    }
+                    className={`cursor-pointer flex items-center gap-1 rounded-md border px-2 py-1 transition-colors ${
+                      feedbackRating === "unhelpful"
+                        ? "border-amber-500/40 bg-amber-500/12 text-amber-600"
+                        : "border-[var(--rag-border)] hover:border-amber-500/40 hover:text-amber-600"
+                    }`}
+                    aria-label={t("needsImprovement")}
+                    title={t("needsImprovement")}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.75 15V18.75A2.25 2.25 0 0 0 12 21v0c.597 0 1.17-.237 1.591-.659L15 18.75v-4.5m-5.25.75H5.464c-.621 0-1.125-.504-1.125-1.125 0-.285.108-.56.302-.77l3.797-4.104a2.25 2.25 0 0 1 1.653-.726H14.25m-4.5 6.75 1.5-6.75m3 6.75h4.125c.621 0 1.125-.504 1.125-1.125v-8.25c0-.621-.504-1.125-1.125-1.125H15.75"
+                      />
+                    </svg>
+                    <span>{t("needsImprovement")}</span>
+                  </button>
+                </div>
+              )}
             {message.from === "ai" &&
               enableOperation &&
               !messageEditing &&

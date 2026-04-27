@@ -12,6 +12,7 @@ import {
   Citation,
   FileResponse,
   FileUsed,
+  MessageFeedback,
   ModelConfig,
   KnowledgeBase,
 } from "@/types/types";
@@ -24,6 +25,7 @@ import {
   getChatContent,
   getChatHistory,
   renameChat,
+  submitChatFeedback,
   updateChatModelConfig,
 } from "@/lib/api/chatApi";
 import useChatStore from "@/stores/chatStore";
@@ -221,6 +223,7 @@ const AIChat: React.FC = () => {
                   type: "text",
                   content: `${item.ai_message.content}`,
                   citations: item.ai_message.citations || [],
+                  feedback: item.ai_message.feedback || null,
                   messageId: `${item.message_id}`,
                   parentMessageId:
                     item.parent_message_id === ""
@@ -428,6 +431,7 @@ const AIChat: React.FC = () => {
                 content: aiMessage,
                 thinking: aiThinking,
                 citations,
+                feedback: null,
                 messageId: messageId ? messageId : "",
                 parentMessageId:
                   userMessages[userMessages.length - 1].parentMessageId,
@@ -500,6 +504,7 @@ const AIChat: React.FC = () => {
           content: aiMessage,
           thinking: aiThinking,
           citations,
+          feedback: null,
           messageId: messageId ? messageId : "",
           parentMessageId:
             userMessages[userMessages.length - 1].parentMessageId,
@@ -638,6 +643,39 @@ const AIChat: React.FC = () => {
     sseConnection(chatId, parentMessageId, message, tempBaseId, userMessages);
   };
 
+  const updateFeedbackState = useCallback(
+    (targetMessageId: string, feedback: MessageFeedback) => {
+      const applyFeedback = (prevMessages: Message[]) =>
+        prevMessages.map((message) =>
+          message.type === "text" &&
+          message.from === "ai" &&
+          message.messageId === targetMessageId
+            ? { ...message, feedback }
+            : message
+        );
+
+      setMessages(applyFeedback);
+      setReceivingMessages(applyFeedback);
+    },
+    []
+  );
+
+  const handleSubmitFeedback = useCallback(
+    async (messageId: string, rating: "helpful" | "unhelpful") => {
+      const conversationId = chatIdRef.current || chatId;
+      if (!conversationId) {
+        return;
+      }
+      try {
+        const response = await submitChatFeedback(conversationId, messageId, rating);
+        updateFeedbackState(messageId, response.data.feedback);
+      } catch (error) {
+        console.error("Error submitting chat feedback:", error);
+      }
+    },
+    [chatId, updateFeedbackState]
+  );
+
   return (
     <div className="rag-page overflow-hidden">
       <Navbar />
@@ -653,6 +691,7 @@ const AIChat: React.FC = () => {
         <ChatBox
           messages={messages}
           onSendMessage={handleSendMessage}
+          onSubmitFeedback={handleSubmitFeedback}
           sendDisabled={sendDisabled}
           onAbort={handleAbort}
           receivingMessageId={receivingMessageId}

@@ -78,6 +78,8 @@
     "viewEvidence": "查看证据详情",
     "hideEvidence": "收起证据详情",
     "pageLabel": "第 {page} 页",
+    "helpful": "有帮助",
+    "needsImprovement": "待改进",
     "score": "得分: ",
     "fromLabel": "来源: ",
     "defaultBaseName": "用户上传"

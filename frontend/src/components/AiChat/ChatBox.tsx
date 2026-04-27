@@ -49,6 +49,10 @@ interface ChatBoxProps {
     tempBaseId: string,
     parentMessageId: string
   ) => void;
+  onSubmitFeedback: (
+    messageId: string,
+    rating: "helpful" | "unhelpful"
+  ) => void;
   onAbort: () => void; // 新增的中断回调
 }
 
@@ -57,6 +61,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   receivingMessageId,
   receivingMessages,
   onSendMessage,
+  onSubmitFeedback,
   sendDisabled,
   onAbort,
 }) => {
@@ -741,6 +746,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
                         showRefFile={showRefFile}
                         setShowRefFile={setShowRefFile}
                         onSendEditingMessage={handleSendEditingMessage}
+                        onSubmitFeedback={onSubmitFeedback}
                         sendDisabled={sendDisabled}
                         enableOperation={true}
                         lastUserMessage={() => ""}
@@ -753,6 +759,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
                       showRefFile={showRefFile}
                       setShowRefFile={setShowRefFile}
                       onSendEditingMessage={handleSendEditingMessage}
+                      onSubmitFeedback={onSubmitFeedback}
                       sendDisabled={sendDisabled}
                       enableOperation={true}
                       lastUserMessage={() => ""}
@@ -785,6 +792,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({
                             showRefFile={showRefFile}
                             setShowRefFile={setShowRefFile}
                             onSendEditingMessage={handleSendEditingMessage}
+                            onSubmitFeedback={onSubmitFeedback}
                             sendDisabled={sendDisabled}
                             enableOperation={true}
                             lastUserMessage={() =>

@@ -10,11 +10,17 @@ export interface Citation {
   excerpt?: string;
 }
 
+export interface MessageFeedback {
+  rating: "helpful" | "unhelpful";
+  updated_at?: string;
+}
+
 export interface Message {
   type: "text" | "image" | "file" | "thinking" | "baseFile";
   content: string | null;
   thinking?: string;
   citations?: Citation[];
+  feedback?: MessageFeedback | null;
   fileName?: string; // 新增文件名字段
   fileType?: string; // 新增文件类型字段
   minioUrl?: string;

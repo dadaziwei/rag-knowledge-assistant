@@ -78,6 +78,8 @@
     "viewEvidence": "View Evidence",
     "hideEvidence": "Hide Evidence",
     "pageLabel": "Page {page}",
+    "helpful": "Helpful",
+    "needsImprovement": "Needs Work",
     "score": "Score: ",
     "fromLabel": "From: ",
     "defaultBaseName": "User Upload"

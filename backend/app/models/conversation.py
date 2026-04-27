@@ -1,5 +1,5 @@
 # Pydantic 模型，用于输入数据验证
-from typing import List
+from typing import List, Literal
 from pydantic import BaseModel
 
 
@@ -18,6 +18,10 @@ class ConversationRenameInput(BaseModel):
 class ConversationUpdateModelConfig(BaseModel):
     conversation_id: str
     chat_model_config: dict
+
+
+class ConversationFeedbackInput(BaseModel):
+    rating: Literal["helpful", "unhelpful"]
 
 
 class TurnInput(BaseModel):

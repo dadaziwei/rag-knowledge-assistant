@@ -501,6 +501,32 @@ class MongoDB:
         )
         return {"status": "success" if result.modified_count > 0 else "failed"}
 
+    async def update_turn_feedback(
+        self,
+        conversation_id: str,
+        message_id: str,
+        rating: str,
+    ) -> Dict[str, Any]:
+        feedback = {
+            "rating": rating,
+            "updated_at": beijing_time_now().isoformat(),
+        }
+        result = await self.db.conversations.update_one(
+            {
+                "conversation_id": conversation_id,
+                "is_delete": False,
+                "turns.message_id": message_id,
+            },
+            {
+                "$set": {
+                    "turns.$.ai_message.feedback": feedback,
+                }
+            },
+        )
+        if result.matched_count == 0:
+            return {"status": "failed", "message": "Conversation turn not found"}
+        return {"status": "success", "feedback": feedback}
+
     async def delete_conversation(self, conversation_id: str) -> dict:
         """根据 conversation_id 删除指定会话，并删除关联的临时知识库"""
         # 获取对话文档

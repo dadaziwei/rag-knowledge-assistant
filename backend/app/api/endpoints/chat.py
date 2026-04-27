@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from app.db.redis import redis
 from app.models.conversation import (
     ConversationCreate,
+    ConversationFeedbackInput,
     ConversationOutput,
     ConversationRenameInput,
     ConversationSummary,
@@ -138,6 +139,25 @@ async def get_conversations_by_user(
         }
         for conversation in conversations
     ]
+
+
+@router.post("/conversations/{conversation_id}/messages/{message_id}/feedback", response_model=dict)
+async def submit_conversation_feedback(
+    conversation_id: str,
+    message_id: str,
+    payload: ConversationFeedbackInput,
+    db: MongoDB = Depends(get_mongo),
+    current_user: User = Depends(get_current_user),
+):
+    await verify_username_match(current_user, conversation_id.split("_")[0])
+    result = await db.update_turn_feedback(
+        conversation_id=conversation_id,
+        message_id=message_id,
+        rating=payload.rating,
+    )
+    if result["status"] == "failed":
+        raise HTTPException(status_code=404, detail=result["message"])
+    return result
 
 
 # 删除指定会话
