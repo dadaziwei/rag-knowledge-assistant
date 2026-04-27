@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | 学习路线 | [learning-path](./learning-path/README.md) | 每天怎么学、按什么顺序看代码 |
 | 后端链路 | [backend](./backend/README.md) | 上传、Kafka、Consumer、process_file、Milvus |
+| 企业级 AI 升级 | [enterprise-ai](./enterprise-ai/README.md) | 引用、拒答、评估、观测、安全与业务闭环 |
 | 面试复盘 | [interview](./interview/README.md) | 简历表达和常见问题答案 |
 | 安全规范 | [security](./security/README.md) | 密钥、`.env`、GitHub 发布注意事项 |
 

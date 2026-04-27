@@ -83,6 +83,11 @@ http://localhost:18080
 - [Kafka Producer 与 Consumer](./tutorials/backend/kafka-producer-consumer.md)
 - [process_file、Milvus 与 metadata 入库](./tutorials/backend/process-file-and-milvus.md)
 
+### 企业级 AI 升级
+
+- [企业级 AI 升级总览](./tutorials/enterprise-ai/README.md)
+- [01 回答引用与来源追踪](./tutorials/enterprise-ai/01-answer-citation.md)
+
 ### 面试复盘
 
 - [面试复盘总览](./tutorials/interview/README.md)

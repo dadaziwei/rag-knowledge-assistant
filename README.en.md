@@ -51,6 +51,7 @@ Tutorials are organized under [tutorials](./tutorials/README.md). The Chinese do
 - [Tutorial index](./tutorials/README.md)
 - [Learning path](./tutorials/learning-path/README.md)
 - [Backend pipeline](./tutorials/backend/README.md)
+- [Enterprise AI upgrades](./tutorials/enterprise-ai/README.md)
 - [Interview notes](./tutorials/interview/README.md)
 - [Secret management](./tutorials/security/secret-management.md)
 

@@ -134,6 +134,17 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
       ? "rag-message-user"
       : "rag-message-ai";
 
+  const toggleReferences = () => {
+    if (!message.messageId) {
+      return;
+    }
+    setShowRefFile((prev) =>
+      prev.includes(message.messageId!)
+        ? prev.filter((item) => item !== message.messageId)
+        : [...prev, message.messageId!]
+    );
+  };
+
   return (
     <div className="rag-message group">
       <div
@@ -242,6 +253,69 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
             isThinking={false}
           />
         )}
+        {message.type === "text" &&
+          message.from === "ai" &&
+          message.citations &&
+          message.citations.length > 0 && (
+            <div className="mt-3 rounded-lg border border-[var(--rag-border)] bg-[var(--rag-panel-soft)] p-3 text-sm text-[var(--rag-text)]">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-[var(--rag-muted)]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="size-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.813 15.904 9 18l-.813-2.096a4.5 4.5 0 0 0-2.206-2.206L3.885 12l2.096-.813a4.5 4.5 0 0 0 2.206-2.206L9 6.885l.813 2.096a4.5 4.5 0 0 0 2.206 2.206l2.096.813-2.096.813a4.5 4.5 0 0 0-2.206 2.206ZM18.259 8.715 18 9.375l-.259-.66a3.375 3.375 0 0 0-1.466-1.466L15.625 7l.65-.259a3.375 3.375 0 0 0 1.466-1.466L18 4.625l.259.65a3.375 3.375 0 0 0 1.466 1.466l.65.259-.65.259a3.375 3.375 0 0 0-1.466 1.466ZM18 16.125l.202.514c.444 1.127 1.333 2.016 2.46 2.46l.514.202-.514.202a3.375 3.375 0 0 0-2.46 2.46L18 22.5l-.202-.514a3.375 3.375 0 0 0-2.46-2.46l-.514-.202.514-.202a3.375 3.375 0 0 0 2.46-2.46L18 16.125Z"
+                    />
+                  </svg>
+                  <span className="font-medium">{t("citationsTitle")}</span>
+                </div>
+                {message.messageId && (
+                  <button
+                    onClick={toggleReferences}
+                    className="cursor-pointer text-[var(--rag-brand)] hover:text-[var(--rag-brand-strong)] transition-colors"
+                  >
+                    {showRefFile.includes(message.messageId)
+                      ? t("hideEvidence")
+                      : t("viewEvidence")}
+                  </button>
+                )}
+              </div>
+              <div className="mt-3 flex flex-col gap-2">
+                {message.citations.slice(0, 3).map((citation, index) => (
+                  <div
+                    key={`${citation.file_name}-${citation.page_number}-${index}`}
+                    className="rounded-md border border-[var(--rag-border)] bg-[var(--rag-panel)] px-3 py-2"
+                  >
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className="font-medium">{citation.file_name}</span>
+                      {typeof citation.page_number === "number" && (
+                        <span className="text-[var(--rag-muted)]">
+                          {t("pageLabel", { page: citation.page_number + 1 })}
+                        </span>
+                      )}
+                      {typeof citation.score === "number" && (
+                        <span className="text-[var(--rag-muted)]">
+                          {t("score")}{citation.score.toFixed(4)}
+                        </span>
+                      )}
+                    </div>
+                    {citation.excerpt && (
+                      <div className="mt-1 text-[var(--rag-muted)]">
+                        {citation.excerpt}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         {/* 消息操作栏--复制、重试、切换等 */}
         {message.type === "text" && (
@@ -502,27 +576,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         )}
         {message.type === "baseFile" &&
           message.content === "image_0" &&
-          message.messageId && (
+          message.messageId &&
+          !message.hideReferenceToggle && (
             <div
               className={`pl-2 flex gap-1 items-center text-sm text-[var(--rag-brand)] hover:text-[var(--rag-brand-strong)] cursor-pointer ${
                 showRefFile.includes(message.messageId) ? "pb-2" : "pb-6"
               }`}
-              onClick={() => {
-                setShowRefFile((prev) => {
-                  // 使用函数式更新确保获取最新状态 ()
-                  if (message.messageId) {
-                    if (prev.includes(message.messageId)) {
-                      // 如果存在：创建新数组（过滤掉目标元素）
-                      return prev.filter((item) => item !== message.messageId);
-                    } else {
-                      // 如果不存在：创建新数组（添加新元素）
-                      return [...prev, message.messageId];
-                    }
-                  } else {
-                    return [...prev];
-                  }
-                });
-              }}
+              onClick={toggleReferences}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -74,6 +74,10 @@
     "edit": "Edit",
     "closeReferences": "Close References",
     "viewReferences": "View References",
+    "citationsTitle": "Grounded By",
+    "viewEvidence": "View Evidence",
+    "hideEvidence": "Hide Evidence",
+    "pageLabel": "Page {page}",
     "score": "Score: ",
     "fromLabel": "From: ",
     "defaultBaseName": "User Upload"

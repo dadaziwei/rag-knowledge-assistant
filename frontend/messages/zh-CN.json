@@ -74,6 +74,10 @@
     "edit": "编辑",
     "closeReferences": "关闭参考文件",
     "viewReferences": "查看参考文件",
+    "citationsTitle": "本次回答依据",
+    "viewEvidence": "查看证据详情",
+    "hideEvidence": "收起证据详情",
+    "pageLabel": "第 {page} 页",
     "score": "得分: ",
     "fromLabel": "来源: ",
     "defaultBaseName": "用户上传"

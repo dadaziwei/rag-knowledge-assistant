@@ -137,6 +137,22 @@ class ResumeRagUpgradeContractTests(unittest.TestCase):
         self.assertIn("enable_dynamic_field=True", milvus)
         self.assertIn("ensure_dynamic_collection", milvus)
 
+    def test_answer_citation_contracts_are_present(self):
+        llm_service = read("backend/app/rag/llm_service.py")
+        chat_page = read("frontend/src/app/[locale]/ai-chat/page.tsx")
+        chat_message = read("frontend/src/components/AiChat/ChatMessage.tsx")
+        types_file = read("frontend/src/types/types.ts")
+
+        self.assertIn("def _build_citations", llm_service)
+        self.assertIn('"type": "citations"', llm_service)
+        self.assertIn('"citations": citations', llm_service)
+        self.assertIn("citations: item.ai_message.citations || []", chat_page)
+        self.assertIn('if (payload.type === "citations")', chat_page)
+        self.assertIn("citationsTitle", chat_message)
+        self.assertIn("viewEvidence", chat_message)
+        self.assertIn("export interface Citation", types_file)
+        self.assertIn("citations?: Citation[]", types_file)
+
 
 if __name__ == "__main__":
     unittest.main()

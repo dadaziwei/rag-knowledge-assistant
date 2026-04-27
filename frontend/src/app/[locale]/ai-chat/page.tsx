@@ -9,6 +9,7 @@ import ChatBox from "@/components/AiChat/ChatBox";
 import {
   Message,
   Chat,
+  Citation,
   FileResponse,
   FileUsed,
   ModelConfig,
@@ -219,6 +220,7 @@ const AIChat: React.FC = () => {
                 {
                   type: "text",
                   content: `${item.ai_message.content}`,
+                  citations: item.ai_message.citations || [],
                   messageId: `${item.message_id}`,
                   parentMessageId:
                     item.parent_message_id === ""
@@ -241,6 +243,8 @@ const AIChat: React.FC = () => {
                   baseId: file.knowledge_db_id,
                   minioUrl: file.file_url,
                   score: file.score,
+                  pageNumber: file.page_number,
+                  hideReferenceToggle: (item.ai_message.citations || []).length > 0,
                   from: "ai",
                 })),
               ];
@@ -337,6 +341,7 @@ const AIChat: React.FC = () => {
     let completion_tokens: number = 0;
     let prompt_tokens: number = 0;
     let file_used: FileUsed[] = [];
+    let citations: Citation[] = [];
 
     // 节流控制
     let throttleTimeout: NodeJS.Timeout | null = null;
@@ -390,6 +395,11 @@ const AIChat: React.FC = () => {
           messageId = payload.message_id;
         }
 
+        if (payload.type === "citations") {
+          citations = payload.data;
+          messageId = payload.message_id;
+        }
+
         if (payload.type === "thinking") {
           aiThinking += payload.data; // 自动处理原始换行符
           messageId = payload.message_id;
@@ -417,6 +427,7 @@ const AIChat: React.FC = () => {
                 ...updatedMessages[lastIndex],
                 content: aiMessage,
                 thinking: aiThinking,
+                citations,
                 messageId: messageId ? messageId : "",
                 parentMessageId:
                   userMessages[userMessages.length - 1].parentMessageId,
@@ -488,6 +499,7 @@ const AIChat: React.FC = () => {
           type: "text",
           content: aiMessage,
           thinking: aiThinking,
+          citations,
           messageId: messageId ? messageId : "",
           parentMessageId:
             userMessages[userMessages.length - 1].parentMessageId,
@@ -509,6 +521,8 @@ const AIChat: React.FC = () => {
               baseId: file.knowledge_db_id,
               minioUrl: file.file_url,
               score: file.score,
+              pageNumber: file.page_number,
+              hideReferenceToggle: citations.length > 0,
               from: "ai",
             } as Message)
         ),

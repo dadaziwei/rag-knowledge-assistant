@@ -1,9 +1,20 @@
 // types.ts
 // types.ts
+export interface Citation {
+  knowledge_db_id: string;
+  file_name: string;
+  file_url: string;
+  image_url: string;
+  page_number?: number;
+  score?: number;
+  excerpt?: string;
+}
+
 export interface Message {
   type: "text" | "image" | "file" | "thinking" | "baseFile";
   content: string | null;
   thinking?: string;
+  citations?: Citation[];
   fileName?: string; // 新增文件名字段
   fileType?: string; // 新增文件类型字段
   minioUrl?: string;
@@ -12,6 +23,8 @@ export interface Message {
   baseId?: string;
   score?: number;
   imageMinioUrl?: string;
+  pageNumber?: number;
+  hideReferenceToggle?: boolean;
   token_number?: {
     total_token: number;
     completion_tokens: number;
@@ -119,6 +132,8 @@ export interface FileUsed {
   image_url: string;
   file_url: string;
   score: number;
+  page_number?: number;
+  excerpt?: string;
 }
 
 // types.ts

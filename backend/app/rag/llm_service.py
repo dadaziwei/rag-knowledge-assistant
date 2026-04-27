@@ -76,6 +76,30 @@ def _format_knowledge_context(retrieved_contexts: list[dict]) -> str:
     return "\n\n".join(blocks)
 
 
+def _trim_excerpt(text: str, limit: int = 180) -> str:
+    normalized = " ".join((text or "").split())
+    if len(normalized) <= limit:
+        return normalized
+    return normalized[: limit - 1].rstrip() + "…"
+
+
+def _build_citations(retrieved_contexts: list[dict], file_used: list[dict]) -> list[dict]:
+    citations = []
+    for file_item, context_item in zip(file_used, retrieved_contexts):
+        citations.append(
+            {
+                "knowledge_db_id": file_item.get("knowledge_db_id"),
+                "file_name": file_item.get("file_name"),
+                "file_url": file_item.get("file_url"),
+                "image_url": file_item.get("image_url"),
+                "page_number": file_item.get("page_number"),
+                "score": file_item.get("score"),
+                "excerpt": _trim_excerpt(context_item.get("text", "")),
+            }
+        )
+    return citations
+
+
 async def _load_file_text_context(file_info: dict, text_cache: dict[str, str]) -> str:
     minio_filename = file_info.get("file_minio_filename")
     file_name = file_info.get("file_name")
@@ -198,6 +222,7 @@ class ChatService:
         bases.extend(base_used)
         file_used = []
         retrieved_contexts = []
+        citations = []
         text_cache = {}
         if bases:
             result_score = []
@@ -278,6 +303,7 @@ class ChatService:
                         )
 
         knowledge_context = _format_knowledge_context(retrieved_contexts)
+        citations = _build_citations(retrieved_contexts, file_used)
         if knowledge_context:
             content.append({"type": "text", "text": knowledge_context})
 
@@ -342,6 +368,15 @@ class ChatService:
                 }
             )
             yield f"data: {file_used_payload}\n\n"
+
+            citations_payload = json.dumps(
+                {
+                    "type": "citations",
+                    "data": citations,
+                    "message_id": message_id,
+                }
+            )
+            yield f"data: {citations_payload}\n\n"
 
             # 处理流响应
             async for chunk in response:  # 直接迭代异步生成器
@@ -428,7 +463,11 @@ class ChatService:
  No message received from AI
  ```"""
                 )
-            ai_message = {"role": "assistant", "content": "".join(full_response)}
+            ai_message = {
+                "role": "assistant",
+                "content": "".join(full_response),
+                "citations": citations,
+            }
 
             # 保存AI响应到mongodb
             asyncio.create_task(
