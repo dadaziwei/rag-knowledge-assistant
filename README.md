@@ -65,38 +65,6 @@ docker compose -f docker-compose-no-local-embedding.yml --profile document-conve
 http://localhost:18080
 ```
 
-## 教程索引
-
-教程统一放在 [tutorials](./tutorials/README.md) 目录，README 只保留入口。
-
-### 学习路线
-
-- [教程总览](./tutorials/README.md)
-- [学习路线总览](./tutorials/learning-path/README.md)
-- [Day 1：系统入口、配置与服务拓扑](./tutorials/learning-path/day-01-system-overview.md)
-
-### 后端链路
-
-- [后端链路总览](./tutorials/backend/README.md)
-- [async / await 基础](./tutorials/backend/async-await.md)
-- [文件上传接口：base.py](./tutorials/backend/upload-api.md)
-- [Kafka Producer 与 Consumer](./tutorials/backend/kafka-producer-consumer.md)
-- [process_file、Milvus 与 metadata 入库](./tutorials/backend/process-file-and-milvus.md)
-
-### 企业级 AI 升级
-
-- [企业级 AI 升级总览](./tutorials/enterprise-ai/README.md)
-- [01 回答引用与来源追踪](./tutorials/enterprise-ai/01-answer-citation.md)
-
-### 面试复盘
-
-- [面试复盘总览](./tutorials/interview/README.md)
-- [RAG 项目常见面试题](./tutorials/interview/rag-project-qa.md)
-
-### 安全规范
-
-- [敏感信息与 GitHub 发布规范](./tutorials/security/secret-management.md)
-
 ## 核心链路速览
 
 ```text

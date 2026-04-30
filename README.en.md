@@ -44,17 +44,6 @@ Open:
 http://localhost:18080
 ```
 
-## Tutorials
-
-Tutorials are organized under [tutorials](./tutorials/README.md). The Chinese documentation is the primary learning guide.
-
-- [Tutorial index](./tutorials/README.md)
-- [Learning path](./tutorials/learning-path/README.md)
-- [Backend pipeline](./tutorials/backend/README.md)
-- [Enterprise AI upgrades](./tutorials/enterprise-ai/README.md)
-- [Interview notes](./tutorials/interview/README.md)
-- [Secret management](./tutorials/security/secret-management.md)
-
 ## License
 
 This project is licensed under Apache License 2.0. The original license notice is retained in [LICENSE](./LICENSE); daziwei maintains authorship of the integration and secondary development work in this repository.
